@@ -1,0 +1,77 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-o-text-size-adjust: none;
+	overscroll-behavior: none;
+}
+
+@font-face {
+	font-family: '이서윤체';
+	src: url('./lib/fonts/이서윤체.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body,
+input,
+button,
+textarea {
+	font-family: '이서윤체', sans-serif;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	max-width: 100%;
+	height: 100vh;
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+	color: #aaaaaa;
+	opacity: 1;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+select::-webkit-input-placeholder {
+	color: #aaaaaa;
+	opacity: 1;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+select::-moz-placeholder {
+	color: #aaaaaa;
+	opacity: 1;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder,
+select:-ms-input-placeholder {
+	color: #aaaaaa;
+	opacity: 1;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder,
+select::-ms-input-placeholder {
+	color: #aaaaaa;
+	opacity: 1;
+}
+
+@media (min-width: 390px) {
+	body {
+		width: 390px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
