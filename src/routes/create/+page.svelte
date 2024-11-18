@@ -35,9 +35,7 @@
 			placeholder="비밀번호 입력"
 		/>
 		<div class="btnContainer">
-			<button type="submit" class="customBtn" style="background-color: #FFE51E;"
-				>벽난로 만들기 완료</button
-			>
+			<button type="submit" class="customColorBtn">벽난로 만들기 완료</button>
 			<button type="button" class="customBtn" on:click={goBack}>닫기</button>
 		</div>
 	</form>
@@ -83,7 +81,8 @@
 		flex-direction: column;
 	}
 
-	.customBtn {
+	.customBtn,
+	.customColorBtn {
 		width: 100%;
 		height: 40px;
 		border-radius: 10px;
@@ -92,5 +91,9 @@
 		background-color: #fff;
 		font-size: 18px;
 		color: #000;
+	}
+
+	.customColorBtn {
+		background-color: #ffe51e;
 	}
 </style>

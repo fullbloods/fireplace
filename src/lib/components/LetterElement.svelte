@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	export let letter: {
 		id: number;
 		name: string;
@@ -7,9 +8,13 @@
 	};
 
 	let src: string = '/images/letterImg.png';
+
+	let goToDetail = () => {
+		goto('/fireplace/[id]/letterbox/[detailid]');
+	};
 </script>
 
-<div class="letterInner">
+<div class="letterInner" onclick={goToDetail} onkeydown={() => {}} tabindex="0" role="button">
 	<img {src} alt="편지" />
 	<div class="nameText">{letter.name}</div>
 	<div class="dayText">{`D-${letter.day}`}</div>

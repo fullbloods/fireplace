@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 
 	let src = '/images/letterImg.png';
@@ -15,16 +15,16 @@
 <div class="container">
 	<div class="letterContainer">
 		<div class="letterTitle">편지함</div>
-		<button class="letterButton" on:click={goToLetterBox}>
+		<button class="letterButton" onclick={goToLetterBox}>
 			<img {src} alt="편지함" />
 		</button>
 	</div>
 	<div class="name">왼손의 흑염룡의 벽난로</div>
 	<div class="btnContainer">
-		<button class="customBtn" style="background-color: #FFE51E;">
+		<button class="customColorBtn">
 			<img {src} alt="편지" />따뜻한 편지 남기기
 		</button>
-		<button class="customBtn" on:click={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
+		<button class="customBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
 		<button class="customBtn">🔗 내 벽난로 공유하기</button>
 	</div>
 </div>
@@ -79,7 +79,8 @@
 		margin-top: auto;
 	}
 
-	.customBtn {
+	.customBtn,
+	.customColorBtn {
 		width: 100%;
 		height: 48px;
 		border-radius: 8px;
@@ -89,7 +90,11 @@
 		align-items: center;
 	}
 
-	.customBtn > img {
+	.customColorBtn {
+		background-color: #ffe51e;
+	}
+
+	.customColorBtn > img {
 		width: 25px;
 		height: 20px;
 		margin-right: 10px;
