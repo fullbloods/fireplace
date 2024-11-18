@@ -1,17 +1,25 @@
-<script>
+<script lang="ts">
+	import FireCompo from '$lib/components/FireCompo.svelte';
+
 	let name = '';
 	let password = '';
 
 	const goBack = () => {
 		window.history.back();
 	};
+
+	const handleSubmit = (event: SubmitEvent) => {
+		event.preventDefault();
+		alert(`${name}의 벽난로가 생성되었습니다!`);
+	};
 </script>
 
-<div class="createFireplaceContainer">
-	<form>
+<div class="container">
+	<form on:submit={handleSubmit}>
 		<div class="customInputContainer">
 			<input
 				class="customInput"
+				name="name"
 				type="text"
 				bind:value={name}
 				maxlength="8"
@@ -19,16 +27,25 @@
 			/>
 			<span class="suffix">의 벽난로</span>
 		</div>
-		<input class="customInput" type="password" bind:value={password} placeholder="비밀번호 입력" />
+		<input
+			class="customInput"
+			name="password"
+			type="password"
+			bind:value={password}
+			placeholder="비밀번호 입력"
+		/>
 		<div class="btnContainer">
-			<button class="customBtn" style="background-color: #FFE51E;">벽난로 만들기 완료</button>
-			<button class="customBtn" onclick={goBack}>닫기</button>
+			<button type="submit" class="customBtn" style="background-color: #FFE51E;"
+				>벽난로 만들기 완료</button
+			>
+			<button type="button" class="customBtn" on:click={goBack}>닫기</button>
 		</div>
 	</form>
+	<FireCompo />
 </div>
 
 <style>
-	.createFireplaceContainer {
+	.container {
 		width: 100%;
 		height: 100vh;
 		background-color: #114433;
@@ -37,23 +54,24 @@
 
 	.customInputContainer {
 		position: relative;
-		width: 290px;
+		width: 100%;
 	}
 
 	.customInput {
-		width: 290px;
+		width: 100%;
 		height: 40px;
 		padding-right: 80px;
-		padding-left: 10px;
+		padding-left: 16px;
 		border-radius: 10px;
 		border: none;
 		font-size: 18px;
 		margin-bottom: 20px;
+		outline: none;
 	}
 
 	.suffix {
 		position: absolute;
-		right: 110px;
+		right: 30%;
 		top: 35%;
 		transform: translateY(-50%);
 		font-size: 18px;
@@ -66,7 +84,7 @@
 	}
 
 	.customBtn {
-		width: 290px;
+		width: 100%;
 		height: 40px;
 		border-radius: 10px;
 		border: none;

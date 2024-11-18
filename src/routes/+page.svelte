@@ -1,27 +1,33 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	let src = '/images/homeImg.png';
 
-	const goTOCreateFireplace = () => {
-		goto('/createFireplace');
+	const goToCreateFireplace = () => {
+		goto('/create');
 	};
 </script>
 
-<div class="homeContainer">
+<div class="container">
 	<img {src} alt="눈 배경" class="snowImg" />
 	<div class="title">벽난로 만들기</div>
-	<button class="createBtn" onclick={goTOCreateFireplace}>🔥 나의 벽난로 만들기</button>
-	<div class="snsText">문의 : <a href="#">fireplace_developer</a></div>
+	<button class="createBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
+	<div class="snsText">
+		문의 : <a href="https://www.instagram.com/g._.y_1232" target="_blank">fireplace_developer</a>
+	</div>
 </div>
 
 <style>
-	.homeContainer {
+	.container {
 		width: 100%;
 		height: 100vh;
 		background-color: #fff;
+		box-shadow:
+			0 10px 20px rgba(0, 0, 0, 0.19),
+			0 6px 6px rgba(0, 0, 0, 0.23);
 	}
 
 	.snowImg {
+		width: 100%;
 		margin-bottom: 55px;
 	}
 
