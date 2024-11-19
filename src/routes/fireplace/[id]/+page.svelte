@@ -52,6 +52,7 @@
 	.letterTitle {
 		width: 40px;
 		text-align: center;
+		margin-bottom: 4px;
 	}
 
 	.letterButton {
@@ -88,6 +89,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-color: #fff;
 	}
 
 	.customColorBtn {
