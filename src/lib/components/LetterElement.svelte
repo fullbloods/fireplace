@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { showModal } from '../store/modalStore';
+	import { showModal } from '$lib/store/modalStore';
 	import LetterPasswordModal from './LetterPasswordModal.svelte';
 
 	export let letter: {

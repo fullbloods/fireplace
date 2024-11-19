@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { showModal } from '../store/modalStore';
+	import { showModal } from '$lib/store/modalStore';
 
 	const handleCloseModal = () => {
 		showModal.set(false);
