@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { showModal } from '../store/modalStore';
+	import LetterPasswordModal from './LetterPasswordModal.svelte';
+
 	export let letter: {
 		id: number;
 		name: string;
@@ -9,12 +12,23 @@
 
 	let src: string = '/images/letterImg.png';
 
-	let goToDetail = () => {
+	const goToDetail = () => {
 		goto('/fireplace/[id]/letterbox/[detailid]');
+	};
+
+	const handleOpenModal = () => {
+		showModal.set(true);
+		console.log('열림');
 	};
 </script>
 
-<div class="letterInner" onclick={goToDetail} onkeydown={() => {}} tabindex="0" role="button">
+<div
+	class="letterInner"
+	on:click={letter.private ? handleOpenModal : goToDetail}
+	on:keydown={() => {}}
+	tabindex="0"
+	role="button"
+>
 	<img {src} alt="편지" />
 	<div class="nameText">{letter.name}</div>
 	<div class="dayText">{`D-${letter.day}`}</div>
@@ -24,6 +38,8 @@
 		{/if}
 	</div>
 </div>
+
+<LetterPasswordModal />
 
 <style>
 	.letterInner {

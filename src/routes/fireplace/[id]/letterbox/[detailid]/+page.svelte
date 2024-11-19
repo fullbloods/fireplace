@@ -1,11 +1,23 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+
+	const goBack = () => {
+		window.history.back();
+	};
+
+	const goToReply = () => {
+		goto('/fireplace/[id]/writing');
+	};
+</script>
+
 <div class="container">
 	<div class="detailInner">
 		<div class="name"><span>from.{' '}</span>전여친</div>
 		<div class="detail">내용</div>
 	</div>
 	<div class="btnContainer">
-		<button class="customColorBtn">답장하기</button>
-		<button class="customBtn">닫기</button>
+		<button class="customBtn" onclick={goBack}>닫기</button>
+		<button class="customColorBtn" onclick={goToReply}>답장하기</button>
 	</div>
 </div>
 

@@ -15,7 +15,7 @@
 </script>
 
 <div class="container">
-	<form on:submit={handleSubmit}>
+	<form onsubmit={handleSubmit}>
 		<div class="customInputContainer">
 			<input
 				class="customInput"
@@ -35,8 +35,8 @@
 			placeholder="비밀번호 입력"
 		/>
 		<div class="btnContainer">
+			<button type="button" class="customBtn" onclick={goBack}>닫기</button>
 			<button type="submit" class="customColorBtn">벽난로 만들기 완료</button>
-			<button type="button" class="customBtn" on:click={goBack}>닫기</button>
 		</div>
 	</form>
 	<FireCompo />
