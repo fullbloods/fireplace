@@ -39,7 +39,7 @@
 			<button type="submit" class="customColorBtn">벽난로 만들기 완료</button>
 		</div>
 	</form>
-	<FireCompo />
+	<!-- <FireCompo /> -->
 </div>
 
 <style>

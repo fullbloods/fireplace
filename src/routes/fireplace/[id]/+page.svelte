@@ -34,7 +34,7 @@
 		width: 100%;
 		height: 100vh;
 		background-color: #114433;
-		padding: 30px 50px;
+		padding: 30px 10%;
 		display: flex;
 		flex-direction: column;
 	}
@@ -90,6 +90,8 @@
 		justify-content: center;
 		align-items: center;
 		background-color: #fff;
+		color: #000;
+		border: none;
 	}
 
 	.customColorBtn {
