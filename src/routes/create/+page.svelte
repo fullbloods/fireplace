@@ -69,7 +69,7 @@
 
 	.suffix {
 		position: absolute;
-		right: 30%;
+		left: 47%;
 		top: 35%;
 		transform: translateY(-50%);
 		font-size: 18px;
