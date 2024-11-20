@@ -7,6 +7,10 @@
 		goto('/create');
 	};
 
+	const goToWriting = () => {
+		goto('/fireplace/[id]/writing');
+	};
+
 	const goToLetterBox = () => {
 		goto('/fireplace/[id]/letterbox');
 	};
@@ -21,7 +25,7 @@
 	</div>
 	<div class="name">왼손의 흑염룡의 벽난로</div>
 	<div class="btnContainer">
-		<button class="customColorBtn">
+		<button class="customColorBtn" onclick={goToWriting}>
 			<img {src} alt="편지" />따뜻한 편지 남기기
 		</button>
 		<button class="customBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
