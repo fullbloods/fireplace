@@ -9,7 +9,14 @@
 	}[] = [
 		{ id: 1, name: '전여친', day: 2, private: false },
 		{ id: 2, name: '전여친', day: 2, private: true },
-		{ id: 3, name: '전여친', day: 10, private: false }
+		{ id: 3, name: '전여친', day: 10, private: false },
+		{ id: 4, name: '전여친', day: 10, private: false },
+		{ id: 5, name: '전여친', day: 10, private: false },
+		{ id: 6, name: '전여친', day: 10, private: false },
+		{ id: 7, name: '전여친', day: 10, private: false },
+		{ id: 8, name: '전여친', day: 10, private: false },
+		{ id: 9, name: '전여친', day: 10, private: false },
+		{ id: 10, name: '전여친', day: 10, private: false }
 	];
 
 	$: cnt = letters.length;
@@ -31,6 +38,7 @@
 		height: 100vh;
 		background-color: #114433;
 		padding: 50px;
+		overflow: scroll;
 	}
 
 	.title {
@@ -45,6 +53,9 @@
 	}
 
 	.letterContainer {
-		padding-top: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		margin-top: 30px;
 	}
 </style>

@@ -54,20 +54,20 @@
 	}
 
 	.btnContainer {
-		width: 100%;
 		display: flex;
-		justify-content: space-between;
+		gap: 20px;
 		margin-top: 20px;
 	}
 
 	.customBtn,
 	.customColorBtn {
-		width: 40%;
+		flex: 1;
 		height: 40px;
 		background-color: #fff;
 		border: none;
 		border-radius: 10px;
 		font-size: 18px;
+		color: #000;
 	}
 
 	.customColorBtn {

@@ -9,10 +9,12 @@
 
 <div class="container">
 	<img {src} alt="눈 배경" class="snowImg" />
-	<div class="title">벽난로 만들기</div>
-	<button class="createBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
-	<div class="snsText">
-		문의 : <a href="https://www.instagram.com/g._.y_1232" target="_blank">fireplace_developer</a>
+	<div class="content">
+		<div class="title">벽난로 만들기</div>
+		<button class="createBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
+		<div class="snsText">
+			문의 : <a href="https://www.instagram.com/g._.y_1232" target="_blank">fireplace_developer</a>
+		</div>
 	</div>
 </div>
 
@@ -26,19 +28,24 @@
 			0 6px 6px rgba(0, 0, 0, 0.23);
 	}
 
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 50px;
+		padding: 20px 80px;
+	}
+
 	.snowImg {
 		width: 100%;
-		margin-bottom: 55px;
 	}
 
 	.title {
 		font-size: 34px;
 		text-align: center;
-		margin-bottom: 55px;
 	}
 
 	.createBtn {
-		width: 220px;
+		width: 100%;
 		height: 82px;
 		background-color: #ff6c6c;
 		border: none;
@@ -52,10 +59,7 @@
 	}
 
 	.snsText {
-		position: fixed;
-		bottom: 20px;
-		left: 0;
-		right: 0;
+		margin-top: auto;
 		text-align: center;
 		color: #aaaaaa;
 		font-size: 12px;

@@ -44,10 +44,9 @@
 <style>
 	.letterInner {
 		width: 100%;
-		height: 50px;
+		min-height: 50px;
 		background-color: #fff;
 		border-radius: 10px;
-		margin-top: 20px;
 		display: flex;
 		align-items: center;
 		padding: 0 20px;

@@ -31,13 +31,14 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		padding: 50px;
 	}
 
 	.modal {
-		width: 290px;
+		width: 100%;
 		height: 200px;
 		background-color: #fff;
-		padding: 30px 70px;
+		padding: 30px 60px;
 		border-radius: 20px;
 		display: flex;
 		flex-direction: column;
@@ -50,7 +51,7 @@
 	}
 
 	.customInput {
-		width: 150px;
+		width: 100%;
 		height: 30px;
 		border: none;
 		box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
@@ -67,17 +68,18 @@
 
 	.btnContainer {
 		display: flex;
-		justify-content: space-between;
+		gap: 20px;
 	}
 
 	.customBtn,
 	.customColorBtn {
-		width: 60px;
-		height: 20px;
+		flex: 1;
+		height: 30px;
 		background-color: #dcdcdc;
 		border: none;
 		border-radius: 5px;
 		font-size: 12px;
+		color: #000;
 	}
 
 	.customColorBtn {

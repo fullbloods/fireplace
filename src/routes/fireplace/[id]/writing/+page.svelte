@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let firePlaceOwner = '왼손의 흑염룡';
 	let showBottomSheet = false;
+	let shortHeight = false;
 
 	const goBack = () => {
 		window.history.back();
@@ -8,7 +11,7 @@
 
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
-		// alert('편지 작성이 완료되었습니다!');
+		alert('편지 작성이 완료되었습니다!');
 	};
 
 	const openBottonSheet = () => {
@@ -18,6 +21,19 @@
 	const closeBottomSheet = () => {
 		showBottomSheet = false;
 	};
+
+	const checkHeight = () => {
+		shortHeight = window.innerHeight <= 620;
+	};
+
+	onMount(() => {
+		checkHeight();
+		window.addEventListener('resize', checkHeight);
+
+		return () => {
+			window.removeEventListener('resize', checkHeight);
+		};
+	});
 </script>
 
 <form onsubmit={handleSubmit}>
@@ -42,7 +58,7 @@
 			욕설 및 음란물, 타인의 명예를 훼손하는 내용과 사용자에게 피해를 줄 수 있는 음악은 관리자에
 			의해 삭제될 수 있으며, 수가기관의 요청이 있을 경우 관련자료를 제출할 수 있습니다.
 		</p>
-		<div class="btnContainer">
+		<div class="btnContainer" class:shortHeightStyle={shortHeight}>
 			<button type="button" class="customColorBtn" onclick={openBottonSheet}>작성 완료</button>
 			<button type="button" class="customBtn" onclick={goBack}>닫기</button>
 		</div>
@@ -52,10 +68,10 @@
 		<div class="bottomSheet">
 			<div class="bottomSheetContent">
 				<div class="bottomSheetText">벽난로 주인이 언제 편지를 읽었으면 좋겠어요?</div>
-				<input type="date" placeholder="비밀번호 입력" class="dateCustomInput" />
+				<input type="date" placeholder="날짜 입력" class="dateCustomInput" />
 				<div class="sheetBtnContainer">
 					<button class="sheetCloseBtn" onclick={closeBottomSheet}>취소</button>
-					<button class="sheetSubmitBtn" onclick={closeBottomSheet} type="submit">확인</button>
+					<button class="sheetSubmitBtn" type="submit">확인</button>
 				</div>
 			</div>
 		</div>
@@ -165,16 +181,14 @@
 
 	.letterPasswordInput {
 		background-color: #fff;
-		display: flex;
 		align-items: center;
-		gap: 4px;
 		border-radius: 10px;
 		width: 100%;
 		height: 40px;
 		border: none;
 		font-size: 16px;
 		outline: none;
-		padding-left: 16px;
+		padding: 0 16px;
 	}
 
 	.warningMessage {
@@ -192,6 +206,10 @@
 		gap: 20px;
 	}
 
+	.btnContainer.shortHeightStyle {
+		flex-direction: row-reverse;
+	}
+
 	.customBtn,
 	.customColorBtn {
 		width: 100%;
@@ -203,6 +221,7 @@
 
 	.customColorBtn {
 		background-color: #ffe51e;
+		border: none;
 	}
 
 	.bottomSheet {
@@ -222,7 +241,7 @@
 		height: 400px;
 		background: white;
 		border-radius: 20px 20px 0 0;
-		padding: 30px 70px;
+		padding: 30px 50px;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
@@ -235,6 +254,8 @@
 	}
 
 	.dateCustomInput {
+		appearance: none;
+		-webkit-appearance: none;
 		width: 100%;
 		height: 45px;
 		padding: 10px;
@@ -243,12 +264,18 @@
 		border: none;
 		box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
 		border-radius: 5px;
+		background-color: white;
+		color: black;
+	}
+
+	.dateCustomInput:focus {
+		outline: none;
 	}
 
 	.sheetBtnContainer {
 		display: flex;
-		justify-content: space-between;
 		margin-top: auto;
+		gap: 20px;
 	}
 
 	.sheetSubmitBtn,
@@ -259,13 +286,13 @@
 		border: none;
 		border-radius: 5px;
 		cursor: pointer;
-		margin-right: 20px;
 		color: #000;
 		background-color: #dcdcdc;
 	}
 
 	.sheetSubmitBtn {
 		background: #ffe51e;
+		border: none;
 	}
 
 	@keyframes slideUp {
@@ -274,6 +301,16 @@
 		}
 		to {
 			transform: translateY(0);
+		}
+	}
+
+	@media (max-height: 620px) {
+		/* .btnContainer {
+			flex-direction: row-reverse;
+		} */
+
+		.letterContent {
+			height: 130px;
 		}
 	}
 </style>
