@@ -1,9 +1,29 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { showBottomSheet } from '$lib/store/modalStore';
+	import BottomSheet from '$lib/components/BottomSheet.svelte';
 
 	let firePlaceOwner = '왼손의 흑염룡';
-	let showBottomSheet = false;
-	let shortHeight = false;
+	let shortHeight = $state(false);
+
+	// let formData: {
+	// 	name: string;
+	// 	content: string;
+	// 	private: boolean;
+	// 	password: string;
+	// 	date: string;
+	// };
+	let formData = $state({
+		name: '',
+		content: '',
+		private: false,
+		password: '',
+		date: ''
+	});
+
+	const handleOpenBottomSheet = () => {
+		showBottomSheet.set(true);
+	};
 
 	const goBack = () => {
 		window.history.back();
@@ -11,19 +31,13 @@
 
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
+		console.log('저장될 편지 내용', $state.snapshot(formData));
 		alert('편지 작성이 완료되었습니다!');
-	};
-
-	const openBottonSheet = () => {
-		showBottomSheet = true;
-	};
-
-	const closeBottomSheet = () => {
-		showBottomSheet = false;
+		showBottomSheet.set(false);
 	};
 
 	const checkHeight = () => {
-		shortHeight = window.innerHeight <= 620;
+		shortHeight = window.innerHeight <= 670;
 	};
 
 	onMount(() => {
@@ -41,40 +55,38 @@
 		<p class="toName">To.{' '}{firePlaceOwner}</p>
 		<div class="nameInputWrapper">
 			<span class="suffix">from. </span>
-			<input type="text" class="nameInput" placeholder="이름 입력" />
+			<input type="text" class="nameInput" placeholder="이름 입력" bind:value={formData.name} />
 		</div>
-		<textarea class="letterContent" placeholder="편지 내용"></textarea>
+		<textarea class="letterContent" placeholder="편지 내용" bind:value={formData.content}
+		></textarea>
 		<input
 			type="text"
 			class="musicLinkInput"
 			placeholder="들려주고 싶은 노래의 유튜브 링크를 적어주세요"
 		/>
 		<div class="privateCheckWrapper">
-			<input type="checkbox" class="privateCheckBox" />
+			<input type="checkbox" class="privateCheckBox" bind:checked={formData.private} />
 			<p class="privateNotice">비공개(벽난로 주인만 볼 수 있습니다.)</p>
 		</div>
-		<input type="password" class="letterPasswordInput" placeholder="편지 비밀번호" />
+		<input
+			type="password"
+			class="letterPasswordInput"
+			placeholder="편지 비밀번호"
+			bind:value={formData.password}
+		/>
 		<p class="warningMessage">
 			욕설 및 음란물, 타인의 명예를 훼손하는 내용과 사용자에게 피해를 줄 수 있는 음악은 관리자에
 			의해 삭제될 수 있으며, 수가기관의 요청이 있을 경우 관련자료를 제출할 수 있습니다.
 		</p>
 		<div class="btnContainer" class:shortHeightStyle={shortHeight}>
-			<button type="button" class="customColorBtn" onclick={openBottonSheet}>작성 완료</button>
+			<button type="button" class="customColorBtn" onclick={handleOpenBottomSheet}>작성 완료</button
+			>
 			<button type="button" class="customBtn" onclick={goBack}>닫기</button>
 		</div>
 	</div>
 
-	{#if showBottomSheet}
-		<div class="bottomSheet">
-			<div class="bottomSheetContent">
-				<div class="bottomSheetText">벽난로 주인이 언제 편지를 읽었으면 좋겠어요?</div>
-				<input type="date" placeholder="날짜 입력" class="dateCustomInput" />
-				<div class="sheetBtnContainer">
-					<button class="sheetCloseBtn" onclick={closeBottomSheet}>취소</button>
-					<button class="sheetSubmitBtn" type="submit">확인</button>
-				</div>
-			</div>
-		</div>
+	{#if $showBottomSheet}
+		<BottomSheet {formData} />
 	{/if}
 </form>
 
@@ -101,7 +113,7 @@
 		align-items: center;
 		border-radius: 10px;
 		width: 100%;
-		height: 40px;
+		min-height: 40px;
 		padding: 0 16px;
 	}
 
@@ -123,7 +135,7 @@
 
 	.letterContent {
 		width: 100%;
-		height: 200px;
+		min-height: 200px;
 		padding: 16px;
 		font-size: 18px;
 		border-radius: 10px;
@@ -133,7 +145,7 @@
 
 	.musicLinkInput {
 		width: 100%;
-		height: 40px;
+		min-height: 40px;
 		border: none;
 		font-size: 12px;
 		padding: 0 16px;
@@ -184,7 +196,7 @@
 		align-items: center;
 		border-radius: 10px;
 		width: 100%;
-		height: 40px;
+		min-height: 40px;
 		border: none;
 		font-size: 16px;
 		outline: none;
@@ -217,100 +229,11 @@
 		color: #000;
 		border-radius: 10px;
 		background-color: #fff;
+		border: none;
 	}
 
 	.customColorBtn {
 		background-color: #ffe51e;
 		border: none;
-	}
-
-	.bottomSheet {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.5);
-		display: flex;
-		justify-content: center;
-		align-items: flex-end;
-	}
-
-	.bottomSheetContent {
-		width: 100%;
-		height: 400px;
-		background: white;
-		border-radius: 20px 20px 0 0;
-		padding: 30px 50px;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-		animation: slideUp 0.3s ease-out;
-	}
-
-	.bottomSheetText {
-		font-size: 16px;
-		margin: 20px 0 50px 0;
-	}
-
-	.dateCustomInput {
-		appearance: none;
-		-webkit-appearance: none;
-		width: 100%;
-		height: 45px;
-		padding: 10px;
-		margin: 10px 0;
-		font-size: 16px;
-		border: none;
-		box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
-		border-radius: 5px;
-		background-color: white;
-		color: black;
-	}
-
-	.dateCustomInput:focus {
-		outline: none;
-	}
-
-	.sheetBtnContainer {
-		display: flex;
-		margin-top: auto;
-		gap: 20px;
-	}
-
-	.sheetSubmitBtn,
-	.sheetCloseBtn {
-		flex: 1;
-		height: 40px;
-		font-size: 16px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		color: #000;
-		background-color: #dcdcdc;
-	}
-
-	.sheetSubmitBtn {
-		background: #ffe51e;
-		border: none;
-	}
-
-	@keyframes slideUp {
-		from {
-			transform: translateY(100%);
-		}
-		to {
-			transform: translateY(0);
-		}
-	}
-
-	@media (max-height: 620px) {
-		/* .btnContainer {
-			flex-direction: row-reverse;
-		} */
-
-		.letterContent {
-			height: 130px;
-		}
 	}
 </style>

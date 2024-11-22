@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
 	const goBack = () => {
@@ -12,7 +13,7 @@
 
 <div class="container">
 	<div class="detailInner">
-		<div class="name"><span>from.{' '}</span>전여친</div>
+		<div class="name"><span>from.{' '}</span>{name}</div>
 		<div class="detail">내용</div>
 	</div>
 	<div class="btnContainer">

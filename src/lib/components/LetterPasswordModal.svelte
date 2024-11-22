@@ -3,7 +3,6 @@
 
 	const handleCloseModal = () => {
 		showModal.set(false);
-		console.log('닫힘', showModal);
 	};
 </script>
 

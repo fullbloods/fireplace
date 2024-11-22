@@ -13,12 +13,11 @@
 	let src: string = '/images/letterImg.png';
 
 	const goToDetail = () => {
-		goto('/fireplace/[id]/letterbox/[detailid]');
+		goto(`/fireplace/[id]/letterbox/[detailid]`);
 	};
 
 	const handleOpenModal = () => {
 		showModal.set(true);
-		console.log('열림');
 	};
 </script>
 
