@@ -1,18 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { showBottomSheet } from '$lib/store/modalStore';
-	import BottomSheet from '$lib/components/BottomSheet.svelte';
+	import BottomSheet from '$lib/components/WritingBottomSheet.svelte';
 
 	let firePlaceOwner = '왼손의 흑염룡';
 	let shortHeight = $state(false);
 
-	// let formData: {
-	// 	name: string;
-	// 	content: string;
-	// 	private: boolean;
-	// 	password: string;
-	// 	date: string;
-	// };
 	let formData = $state({
 		name: '',
 		content: '',

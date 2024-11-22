@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
+	import { showBottomSheet } from '$lib/store/modalStore';
+	import BottomSheet from '$lib/components/LinkBottomSheet.svelte';
 	let src = '/images/letterImg.png';
 
 	const goToCreateFireplace = () => {
@@ -13,6 +14,10 @@
 
 	const goToLetterBox = () => {
 		goto('/fireplace/[id]/letterbox');
+	};
+
+	const handleOpenBottomSheet = () => {
+		showBottomSheet.set(true);
 	};
 </script>
 
@@ -29,8 +34,11 @@
 			<img {src} alt="편지" />따뜻한 편지 남기기
 		</button>
 		<button class="customBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
-		<button class="customBtn">🔗 내 벽난로 공유하기</button>
+		<button class="customBtn" onclick={handleOpenBottomSheet}>🔗 내 벽난로 공유하기</button>
 	</div>
+	{#if $showBottomSheet}
+		<BottomSheet />
+	{/if}
 </div>
 
 <style>

@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { showBottomSheet } from '$lib/store/modalStore';
 
-	interface Props {
-		date: string;
-	}
-
 	let { formData } = $props();
 
 	const handleCloseBottomSheet = () => {
@@ -17,7 +13,7 @@
 		<div class="bottomSheetText">벽난로 주인이 언제 편지를 읽었으면 좋겠어요?</div>
 		<input type="date" placeholder="날짜 입력" class="dateCustomInput" bind:value={formData.date} />
 		<div class="sheetBtnContainer">
-			<button class="sheetCloseBtn" onclick={handleCloseBottomSheet}>취소</button>
+			<button class="sheetCloseBtn" onclick={handleCloseBottomSheet}>닫기</button>
 			<button class="sheetSubmitBtn" type="submit">확인</button>
 		</div>
 	</div>
