@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import FireCompo from '$lib/components/FireCompo.svelte';
 
 	let name = '';
@@ -11,21 +12,24 @@
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
 		alert(`${name}의 벽난로가 생성되었습니다!`);
+		goto('/fireplace/[1]');
 	};
 </script>
 
 <div class="container">
 	<form onsubmit={handleSubmit}>
 		<div class="customInputContainer">
-			<input
-				class="customInput"
-				name="name"
-				type="text"
-				bind:value={name}
-				maxlength="8"
-				placeholder="이름(최대 8자)"
-			/>
-			<span class="suffix">의 벽난로</span>
+			<div class="nameInputContainer">
+				<input
+					class="customNameInput"
+					name="name"
+					type="text"
+					bind:value={name}
+					maxlength="8"
+					placeholder="이름(최대 8자)"
+				/>
+				<span class="suffix">의 벽난로</span>
+			</div>
 		</div>
 		<input
 			class="customInput"
@@ -51,15 +55,13 @@
 	}
 
 	.customInputContainer {
-		position: relative;
 		width: 100%;
 	}
 
 	.customInput {
 		width: 100%;
 		height: 40px;
-		padding-right: 80px;
-		padding-left: 16px;
+		padding: 0 16px;
 		border-radius: 10px;
 		border: none;
 		font-size: 18px;
@@ -67,13 +69,25 @@
 		outline: none;
 	}
 
-	.suffix {
-		position: absolute;
-		left: 47%;
-		top: 35%;
-		transform: translateY(-50%);
+	.nameInputContainer {
+		width: 100%;
+		height: 40px;
+		display: flex;
+		background-color: #fff;
+		border-radius: 10px;
+		padding: 0 16px;
+		margin-bottom: 20px;
 		font-size: 18px;
-		pointer-events: none;
+	}
+
+	.customNameInput {
+		width: 130px;
+		border: none;
+		outline: none;
+		font-size: 18px;
+	}
+	.suffix {
+		align-content: center;
 	}
 
 	.btnContainer {
