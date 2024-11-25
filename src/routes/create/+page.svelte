@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import FireCompo from '$lib/components/FireCompo.svelte';
+	import FireAni from '$lib/components/FireAni.svelte';
 
 	let name = '';
 	let password = '';
@@ -43,7 +43,7 @@
 			<button type="submit" class="customColorBtn">벽난로 만들기 완료</button>
 		</div>
 	</form>
-	<!-- <FireCompo /> -->
+	<FireAni />
 </div>
 
 <style>
