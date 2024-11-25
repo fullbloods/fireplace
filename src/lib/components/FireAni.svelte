@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { gsap } from 'gsap';
-import { CustomEase } from 'gsap/CustomEase';
-
+	import { CustomEase } from 'gsap/CustomEase';
 
 	gsap.registerPlugin(CustomEase);
 
