@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { showBottomSheet } from '$lib/store/modalStore';
 	import BottomSheet from '$lib/components/WritingBottomSheet.svelte';
+	import { goto } from '$app/navigation';
 
 	let firePlaceOwner = '왼손의 흑염룡';
 	let shortHeight = $state(false);
@@ -15,6 +16,13 @@
 	});
 
 	const handleOpenBottomSheet = () => {
+		if (!formData.name.trim()) {
+			alert('이름을 입력해주세요.');
+			return;
+		} else if (!formData.content.trim()) {
+			alert('내용을 적어주세요.');
+			return;
+		}
 		showBottomSheet.set(true);
 	};
 
@@ -24,9 +32,19 @@
 
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
-		console.log('저장될 편지 내용', $state.snapshot(formData));
+		if (!formData.name.trim()) {
+			alert('이름을 입력해주세요.');
+			return;
+		} else if (!formData.content.trim()) {
+			alert('내용을 적어주세요.');
+			return;
+		} else if (!formData.date.trim()) {
+			alert('날짜를 입력해주세요.');
+			return;
+		}
 		alert('편지 작성이 완료되었습니다!');
 		showBottomSheet.set(false);
+		goto('/fireplace/[id]');
 	};
 
 	const checkHeight = () => {
