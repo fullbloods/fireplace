@@ -1,26 +1,26 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { showBottomSheet } from '$lib/store/modalStore';
-	import BottomSheet from '$lib/components/WritingBottomSheet.svelte';
-	import { goto } from '$app/navigation';
+	import { onMount } from "svelte";
+	import { showBottomSheet } from "$lib/store/modalStore";
+	import BottomSheet from "$lib/components/WritingBottomSheet.svelte";
+	import { goto } from "$app/navigation";
 
-	let firePlaceOwner = '왼손의 흑염룡';
+	let firePlaceOwner = "왼손에 흑염룡";
 	let shortHeight = $state(false);
 
 	let formData = $state({
-		name: '',
-		content: '',
+		name: "",
+		content: "",
 		private: false,
-		password: '',
-		date: ''
+		password: "",
+		date: ""
 	});
 
 	const handleOpenBottomSheet = () => {
 		if (!formData.name.trim()) {
-			alert('이름을 입력해주세요.');
+			alert("이름을 입력해주세요.");
 			return;
 		} else if (!formData.content.trim()) {
-			alert('내용을 적어주세요.');
+			alert("내용을 적어주세요.");
 			return;
 		}
 		showBottomSheet.set(true);
@@ -33,18 +33,18 @@
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
 		if (!formData.name.trim()) {
-			alert('이름을 입력해주세요.');
+			alert("이름을 입력해주세요.");
 			return;
 		} else if (!formData.content.trim()) {
-			alert('내용을 적어주세요.');
+			alert("내용을 적어주세요.");
 			return;
 		} else if (!formData.date.trim()) {
-			alert('날짜를 입력해주세요.');
+			alert("날짜를 입력해주세요.");
 			return;
 		}
-		alert('편지 작성이 완료되었습니다!');
+		alert("편지 작성이 완료되었습니다!");
 		showBottomSheet.set(false);
-		goto('/fireplace/[id]');
+		goto("/fireplace/[id]");
 	};
 
 	const checkHeight = () => {
@@ -53,17 +53,17 @@
 
 	onMount(() => {
 		checkHeight();
-		window.addEventListener('resize', checkHeight);
+		window.addEventListener("resize", checkHeight);
 
 		return () => {
-			window.removeEventListener('resize', checkHeight);
+			window.removeEventListener("resize", checkHeight);
 		};
 	});
 </script>
 
 <form onsubmit={handleSubmit}>
 	<div class="container" class:shortContainer={shortHeight}>
-		<p class="toName">To.{' '}{firePlaceOwner}</p>
+		<p class="toName">To.{" "}{firePlaceOwner}</p>
 		<div class="nameInputWrapper">
 			<span class="suffix">from. </span>
 			<input type="text" class="nameInput" placeholder="이름 입력" bind:value={formData.name} />
@@ -192,7 +192,7 @@
 	}
 
 	.privateCheckBox:checked::after {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 36%;
 		left: 50%;
