@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import FireBox from '$lib/components/fireElement/FireBox.svelte';
 
 	const goBack = () => {
 		window.history.back();
@@ -19,6 +20,7 @@
 		<button class="customBtn" onclick={goBack}>닫기</button>
 		<button class="customColorBtn" onclick={goToReply}>답장하기</button>
 	</div>
+	<FireBox isMain={false} />
 </div>
 
 <style>
@@ -72,5 +74,11 @@
 
 	.customColorBtn {
 		background-color: #ffe51e;
+	}
+
+	@media (min-height: 600px) {
+		.container {
+			padding: 70px 45px 0 45px;
+		}
 	}
 </style>

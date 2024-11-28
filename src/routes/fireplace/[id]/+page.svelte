@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { showBottomSheet } from '$lib/store/modalStore';
 	import BottomSheet from '$lib/components/LinkBottomSheet.svelte';
+	import FireBox from '$lib/components/fireElement/FireBox.svelte';
 	let src = '/images/letterImg.png';
 
 	const goToCreateFireplace = () => {
@@ -29,6 +30,7 @@
 		</button>
 	</div>
 	<div class="name">왼손의 흑염룡의 벽난로</div>
+	<FireBox isMain={true} />
 	<div class="btnContainer">
 		<button class="customColorBtn" onclick={goToWriting}>
 			<img {src} alt="편지" />따뜻한 편지 남기기
@@ -83,13 +85,14 @@
 		font-size: 34px;
 		color: #fff;
 		text-align: center;
-		margin-top: 70px;
+		margin-top: 30px;
 	}
 
 	.btnContainer {
 		display: flex;
 		flex-direction: column;
 		margin-top: auto;
+		z-index: 1;
 	}
 
 	.customBtn,

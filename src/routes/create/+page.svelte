@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import FireAni from '$lib/components/FireAni.svelte';
+	import FireBox from '$lib/components/fireElement/FireBox.svelte';
 
 	let name = '';
 	let password = '';
@@ -56,7 +56,7 @@
 			<button type="submit" class="customColorBtn">벽난로 만들기 완료</button>
 		</div>
 	</form>
-	<FireAni />
+	<FireBox isMain={false} />
 </div>
 
 <style>

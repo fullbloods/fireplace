@@ -14,6 +14,29 @@
 	const sparkOffset = 0.72;
 	const numFlames = 50;
 
+	let baseScale = 2;
+	let yOffset = -20;
+
+	function adjustAnimationPosition() {
+		const screenWidth = window.innerWidth;
+		const screenHeight = window.innerHeight;
+
+		if (screenWidth < 768) {
+			yOffset = 120;
+		} else if (screenWidth < 1024) {
+			yOffset = -15;
+		} else {
+			yOffset = -20;
+		}
+
+		gsap.set('.whole', {
+			scale: 3,
+			xPercent: 0,
+			yPercent: yOffset,
+			transformOrigin: '50% -120%'
+		});
+	}
+
 	function createFlames() {
 		if (!flameContainer || !sparksContainer) return;
 
@@ -98,7 +121,6 @@
 
 	onMount(() => {
 		gsap.set('svg', { visibility: 'visible' });
-		gsap.set('.whole', { scale: 1.52, transformOrigin: '50% -500%' });
 
 		CustomEase.create('return', 'M0,0 C0,0 0.162,1 0.4,1 0.918,1 1,0 1,0');
 		CustomEase.create(
@@ -111,6 +133,9 @@
 		);
 
 		createFlames();
+		adjustAnimationPosition();
+
+		window.addEventListener('resize', adjustAnimationPosition);
 	});
 </script>
 
@@ -135,6 +160,6 @@
 	svg {
 		width: 100%;
 		height: 100%;
-		visibility: hidden;
+		visibility: visible;
 	}
 </style>

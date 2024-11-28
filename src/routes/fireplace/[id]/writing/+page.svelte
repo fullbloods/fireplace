@@ -62,7 +62,7 @@
 </script>
 
 <form onsubmit={handleSubmit}>
-	<div class="container">
+	<div class="container" class:shortContainer={shortHeight}>
 		<p class="toName">To.{' '}{firePlaceOwner}</p>
 		<div class="nameInputWrapper">
 			<span class="suffix">from. </span>
@@ -111,6 +111,11 @@
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
+	}
+
+	.shortContainer {
+		padding: 30px 50px;
+		gap: 15px;
 	}
 
 	.toName {
