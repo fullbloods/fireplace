@@ -23,6 +23,7 @@
 		height: fit-content;
 		left: 0;
 		bottom: 0;
+		z-index: 0;
 	}
 
 	.flame {

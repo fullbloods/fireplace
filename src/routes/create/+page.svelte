@@ -2,8 +2,9 @@
 	import { goto } from "$app/navigation";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
 
-	let name = "";
-	let password = "";
+	let name = $state("");
+	let password = $state("");
+	let shortHeight = $state(false);
 
 	const goBack = () => {
 		window.history.back();
@@ -27,10 +28,23 @@
 		alert(`${name}의 벽난로가 생성되었습니다!`);
 		goto("/fireplace/[1]");
 	};
+
+	const checkHeight = () => {
+		shortHeight = window.innerHeight <= 500;
+	};
+
+	$effect(() => {
+		checkHeight();
+		window.addEventListener("resize", checkHeight);
+
+		return () => {
+			window.removeEventListener("resize", checkHeight);
+		};
+	});
 </script>
 
 <div class="container">
-	<form onsubmit={handleSubmit}>
+	<form onsubmit={handleSubmit} class="form">
 		<div class="customInputContainer">
 			<div class="nameInputContainer">
 				<input
@@ -56,7 +70,9 @@
 			<button type="submit" class="customColorBtn">벽난로 만들기 완료</button>
 		</div>
 	</form>
-	<FireBox isMain={false} />
+	{#if !shortHeight}
+		<FireBox isMain={false} />
+	{/if}
 </div>
 
 <style>
@@ -67,6 +83,11 @@
 		background-color: #114433;
 		padding: 100px 50px;
 		position: relative;
+	}
+
+	.form {
+		position: relative;
+		z-index: 2;
 	}
 
 	.customInputContainer {
