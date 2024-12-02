@@ -12,10 +12,10 @@ export const fetchFireplaceUser = async (uuid: string): Promise<FireplaceUser> =
 		if (response.data.success) {
 			return response.data.data;
 		} else {
-			throw new Error("Failed to fetch fireplace user data.");
+			throw new Error("데이터를 가져오는데 실패했습니다.");
 		}
 	} catch (error) {
-		console.error("Error fetching fireplace user:", error);
+		console.error("데이터를 가져오는데 실패했습니다.", error);
 		throw error;
 	}
 };

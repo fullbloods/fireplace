@@ -5,22 +5,26 @@
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
 	import { fetchFireplaceUser } from "$lib/utils/fireplaceUser";
 	import { onMount } from "svelte";
+	import { page } from "$app/stores";
 
 	let src = "/images/letterImg.png";
 
 	let data: { uuid: string; name: string } = { uuid: "", name: "" };
 
+	const id = $page.params.id;
+
 	const fetchData = async () => {
 		try {
-			const url = new URL(window.location.href);
-			const id = url.pathname.split("/").pop();
-
-			if (id) {
-				const user = await fetchFireplaceUser(id);
-				data = user;
+			if (id == null || id == undefined) {
+				goto("/");
+				return;
 			}
-		} catch (error) {
-			console.error("에러");
+
+			const user = await fetchFireplaceUser(id);
+
+			data = user;
+		} catch (err: any) {
+			alert(err.response.data.message);
 		}
 	};
 
@@ -32,17 +36,11 @@
 		goto("/create");
 	};
 
-	const goToWriting = () => {
-		goto(`/fireplace/${data.uuid}/writing`);
-	};
+	const goToWriting = () => goto(`/fireplace/${data.uuid}/writing`);
 
-	const goToLetterBox = () => {
-		goto(`/fireplace/${data.uuid}/letterbox`);
-	};
+	const goToLetterBox = () => goto(`/fireplace/${data.uuid}/letterbox`);
 
-	const handleOpenBottomSheet = () => {
-		showBottomSheet.set(true);
-	};
+	const handleOpenBottomSheet = () => showBottomSheet.set(true);
 </script>
 
 <div class="container">
@@ -52,7 +50,7 @@
 			<img {src} alt="편지함" />
 		</button>
 	</div>
-	<div class="name">{data.name}</div>
+	<div class="name">{data.name}의 벽난로</div>
 	<FireBox isMain={true} />
 	<div class="btnContainer">
 		<button class="customColorBtn" onclick={goToWriting}>
