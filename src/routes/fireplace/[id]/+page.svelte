@@ -97,7 +97,7 @@
 		position: fixed;
 		bottom: 3vh;
 		left: 0;
-		padding: 0 16px;
+		padding: 0 10%;
 	}
 
 	.customBtn,

@@ -7,12 +7,12 @@
 </script>
 
 <div class="container">
-	<di class="placeContainer">
+	<div class="placeContainer">
 		<img {src} alt="벽난로" class="flame" class:mainrenderFlame={isMain} />
 		<div class="placeWall">
 			<FireAni />
 		</div>
-	</di>
+	</div>
 	<div class="floor" class:mainRenderFloor={isMain}></div>
 </div>
 
