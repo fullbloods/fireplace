@@ -3,18 +3,41 @@
 	import { showBottomSheet } from "$lib/store/modalStore";
 	import BottomSheet from "$lib/components/LinkBottomSheet.svelte";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
+	import { fetchFireplaceUser } from "$lib/utils/fireplaceUser";
+	import { onMount } from "svelte";
+
 	let src = "/images/letterImg.png";
+
+	let data: { uuid: string; name: string } = { uuid: "", name: "" };
+
+	const fetchData = async () => {
+		try {
+			const url = new URL(window.location.href);
+			const id = url.pathname.split("/").pop();
+
+			if (id) {
+				const user = await fetchFireplaceUser(id);
+				data = user;
+			}
+		} catch (error) {
+			console.error("에러");
+		}
+	};
+
+	onMount(() => {
+		fetchData();
+	});
 
 	const goToCreateFireplace = () => {
 		goto("/create");
 	};
 
 	const goToWriting = () => {
-		goto("/fireplace/[id]/writing");
+		goto(`/fireplace/${data.uuid}/writing`);
 	};
 
 	const goToLetterBox = () => {
-		goto("/fireplace/[id]/letterbox");
+		goto(`/fireplace/${data.uuid}/letterbox`);
 	};
 
 	const handleOpenBottomSheet = () => {
@@ -29,7 +52,7 @@
 			<img {src} alt="편지함" />
 		</button>
 	</div>
-	<div class="name">왼손의 흑염룡의 벽난로</div>
+	<div class="name">{data.name}</div>
 	<FireBox isMain={true} />
 	<div class="btnContainer">
 		<button class="customColorBtn" onclick={goToWriting}>

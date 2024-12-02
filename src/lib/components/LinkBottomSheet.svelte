@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { showBottomSheet } from '$lib/store/modalStore';
+	import { showBottomSheet } from "$lib/store/modalStore";
 	let url: string = window.location.href;
 
 	const handleCloseBottomSheet = () => {
@@ -33,6 +33,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-end;
+		z-index: 2;
 	}
 	.bottomSheetContent {
 		width: 100%;
