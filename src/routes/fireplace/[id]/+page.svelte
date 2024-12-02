@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { showBottomSheet } from '$lib/store/modalStore';
-	import BottomSheet from '$lib/components/LinkBottomSheet.svelte';
-	import FireBox from '$lib/components/fireElement/FireBox.svelte';
-	let src = '/images/letterImg.png';
+	import { goto } from "$app/navigation";
+	import { showBottomSheet } from "$lib/store/modalStore";
+	import BottomSheet from "$lib/components/LinkBottomSheet.svelte";
+	import FireBox from "$lib/components/fireElement/FireBox.svelte";
+	let src = "/images/letterImg.png";
 
 	const goToCreateFireplace = () => {
-		goto('/create');
+		goto("/create");
 	};
 
 	const goToWriting = () => {
-		goto('/fireplace/[id]/writing');
+		goto("/fireplace/[id]/writing");
 	};
 
 	const goToLetterBox = () => {
-		goto('/fireplace/[id]/letterbox');
+		goto("/fireplace/[id]/letterbox");
 	};
 
 	const handleOpenBottomSheet = () => {
@@ -89,10 +89,15 @@
 	}
 
 	.btnContainer {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		margin-top: auto;
 		z-index: 1;
+		position: fixed;
+		bottom: 3vh;
+		left: 0;
+		padding: 0 16px;
 	}
 
 	.customBtn,

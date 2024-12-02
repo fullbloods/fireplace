@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import FireBox from '$lib/components/fireElement/FireBox.svelte';
+	import { goto } from "$app/navigation";
+	import FireBox from "$lib/components/fireElement/FireBox.svelte";
 
-	let name = '';
-	let password = '';
+	let name = "";
+	let password = "";
 
 	const goBack = () => {
 		window.history.back();
@@ -12,20 +12,20 @@
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
 		if (!name.trim()) {
-			alert('이름을 입력해주세요.');
+			alert("이름을 입력해주세요.");
 			return;
 		}
 		if (name.length > 8) {
-			alert('이름은 최대 8자까지 가능합니다.');
+			alert("이름은 최대 8자까지 가능합니다.");
 			return;
 		}
 		if (!password.trim()) {
-			alert('비밀번호를 입력해주세요.');
+			alert("비밀번호를 입력해주세요.");
 			return;
 		}
 
 		alert(`${name}의 벽난로가 생성되었습니다!`);
-		goto('/fireplace/[1]');
+		goto("/fireplace/[1]");
 	};
 </script>
 
@@ -62,9 +62,11 @@
 <style>
 	.container {
 		width: 100%;
-		height: 100vh;
+		height: auto;
+		min-height: 100vh;
 		background-color: #114433;
 		padding: 100px 50px;
+		position: relative;
 	}
 
 	.customInputContainer {

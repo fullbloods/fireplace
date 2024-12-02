@@ -107,7 +107,7 @@
 		color: #fff;
 		width: 100%;
 		height: 100vh;
-		padding: 50px;
+		padding: 30px;
 		display: flex;
 		flex-direction: column;
 		gap: 20px;

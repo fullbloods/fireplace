@@ -1,7 +1,7 @@
 <script>
-	import FireAni from './FireAni.svelte';
+	import FireAni from "./FireAni.svelte";
 
-	let src = '/images/firePlaceFrame.png';
+	let src = "/images/firePlaceFrame.png";
 
 	export let isMain = true;
 </script>
@@ -18,7 +18,7 @@
 
 <style>
 	.container {
-		position: absolute;
+		position: fixed;
 		width: 100%;
 		height: fit-content;
 		left: 0;
