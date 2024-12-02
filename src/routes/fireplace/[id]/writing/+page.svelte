@@ -106,7 +106,8 @@
 		background-color: #114433;
 		color: #fff;
 		width: 100%;
-		height: 100vh;
+		height: auto;
+		min-height: 100vh;
 		padding: 30px;
 		display: flex;
 		flex-direction: column;
