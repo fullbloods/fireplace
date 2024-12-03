@@ -1,13 +1,13 @@
-import type { FireplaceUser } from "$lib/types/UserType";
+import type { Letter } from "$lib/types/LetterType";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const fetchFireplaceUser = async (uuid: string): Promise<FireplaceUser> => {
+export const getLetter = async (uuid: string): Promise<Letter[]> => {
 	try {
-		const response = await axios.get(`${API_URL}/fire/${uuid}`);
-		if (response.data.success) {
-			return response.data.data;
+		const { data } = await axios.get(`${API_URL}/fire/${uuid}/letter`);
+		if (data.success) {
+			return data.data;
 		} else {
 			throw new Error("데이터를 가져오는데 실패했습니다.");
 		}

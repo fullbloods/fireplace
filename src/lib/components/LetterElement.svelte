@@ -1,19 +1,15 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { showModal } from '$lib/store/modalStore';
-	import LetterPasswordModal from './LetterPasswordModal.svelte';
+	import type { Letter } from "$lib/types/LetterType";
+	import { goto } from "$app/navigation";
+	import { showModal } from "$lib/store/modalStore";
+	import LetterPasswordModal from "./LetterPasswordModal.svelte";
 
-	export let letter: {
-		id: number;
-		name: string;
-		day: number;
-		private: boolean;
-	};
+	export let letter: Letter;
 
-	let src: string = '/images/letterImg.png';
+	let src: string = "/images/letterImg.png";
 
 	const goToDetail = () => {
-		goto(`/fireplace/[id]/letterbox/[detailid]`);
+		goto(`/fireplace/${letter.uuid}/letterbox/detail`);
 	};
 
 	const handleOpenModal = () => {
@@ -23,16 +19,16 @@
 
 <div
 	class="letterInner"
-	on:click={letter.private ? handleOpenModal : goToDetail}
+	on:click={letter.type === "PRIVATE" ? handleOpenModal : goToDetail}
 	on:keydown={() => {}}
 	tabindex="0"
 	role="button"
 >
 	<img {src} alt="편지" />
 	<div class="nameText">{letter.name}</div>
-	<div class="dayText">{`D-${letter.day}`}</div>
+	<div class="dayText">{`D-${letter.diffDate}`}</div>
 	<div class="private">
-		{#if letter.private}
+		{#if letter.type === "PRIVATE"}
 			🔒
 		{/if}
 	</div>
