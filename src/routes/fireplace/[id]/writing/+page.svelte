@@ -3,18 +3,18 @@
 	import { showBottomSheet } from "$lib/store/modalStore";
 	import BottomSheet from "$lib/components/WritingBottomSheet.svelte";
 	import { goto } from "$app/navigation";
+	import axios from "axios";
 
 	let firePlaceOwner = "왼손에 흑염룡";
 	let shortHeight = $state(false);
-
 	let formData = $state({
-		name: "",
-		content: "",
-		private: false,
-		password: "",
-		date: "",
-		music: ""
-	});
+    name: "",
+    content: "",
+    private: false,
+    password: "",
+    date: "",
+    music: ""
+});
 
 	const handleOpenBottomSheet = () => {
 		if (!formData.name.trim()) {
@@ -34,7 +34,6 @@
 	const handleSubmit = async (event: SubmitEvent) => {
 		event.preventDefault();
 
-		// 공통 검증 로직
 		if (!formData.name.trim()) {
 			alert("이름을 입력해주세요.");
 			return;
@@ -46,14 +45,12 @@
 			return;
 		}
 
-		// YouTube 링크 검증
 		const musicId = extractVideoId(formData.music);
-		if (!musicId && formData.music) {
+		if (formData.music && !extractVideoId(formData.music)) {
 			alert("유효한 유튜브 링크를 입력해주세요.");
 			return;
-		}
-
-		// 페이로드 생성
+	}
+		
 		const payload = {
 			name: formData.name,
 			content: formData.content,
@@ -63,44 +60,35 @@
 			openAt: formData.date
 		};
 
-		// API 요청
 		try {
-			const response = await fetch(
-				"http://localhost:8070/fire/964e408d-8245-42c5-b6d1-5467287ecf14/letter",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify(payload)
-				}
-			);
+		const response = await axios.post("http://localhost:8070", payload);
 
-			if (response.ok) {
-				alert("편지가 성공적으로 저장되었습니다!");
-				showBottomSheet.set(false);
-				goto("/fireplace/[id]");
-			} else {
-				alert("편지 저장 중 오류가 발생했습니다.");
-			}
-		} catch (error) {
-			alert("서버와 통신 중 오류가 발생했습니다.");
-			console.log(error);
+		if (response.status === 200) {
+			alert("편지가 성공적으로 저장되었습니다!");
+			showBottomSheet.set(true);
+			goto("/fireplace/[id]");
+		} else {
+			alert("편지 저장 중 오류가 발생했습니다.");
 		}
-	};
+	} catch (error) {
+		alert("서버와 통신 중 오류가 발생했습니다.");
+		console.log(error);
+	}
+};
 
 	const checkHeight = () => {
 		shortHeight = window.innerHeight <= 670;
 	};
 
 	onMount(() => {
-		checkHeight();
-		window.addEventListener("resize", checkHeight);
+    checkHeight();
+    window.addEventListener("resize", checkHeight);
 
-		return () => {
-			window.removeEventListener("resize", checkHeight);
-		};
-	});
+    return () => {
+        window.removeEventListener("resize", checkHeight);
+    };
+});
+
 
 	const extractVideoId = (url: string): string | null => {
 		const regex =
