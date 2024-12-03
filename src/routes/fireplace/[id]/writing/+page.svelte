@@ -23,7 +23,10 @@
 		} else if (!formData.content.trim()) {
 			alert("내용을 적어주세요.");
 			return;
-		}
+		}	else if (formData.music && !extractVideoId(formData.music)) {
+			alert("유효한 유튜브 링크를 입력해주세요.");
+			return;
+	}
 		showBottomSheet.set(true);
 	};
 
@@ -32,24 +35,10 @@
 	};
 
 	const handleSubmit = async (event: SubmitEvent) => {
+		const musicId = extractVideoId(formData.music);
 		event.preventDefault();
 
-		if (!formData.name.trim()) {
-			alert("이름을 입력해주세요.");
-			return;
-		} else if (!formData.content.trim()) {
-			alert("내용을 적어주세요.");
-			return;
-		} else if (!formData.date.trim()) {
-			alert("날짜를 입력해주세요.");
-			return;
-		}
-
-		const musicId = extractVideoId(formData.music);
-		if (formData.music && !extractVideoId(formData.music)) {
-			alert("유효한 유튜브 링크를 입력해주세요.");
-			return;
-	}
+		handleOpenBottomSheet();
 		
 		const payload = {
 			name: formData.name,
@@ -61,19 +50,14 @@
 		};
 
 		try {
-		const response = await axios.post("http://localhost:8070", payload);
-
-		if (response.status === 200) {
+			await axios.post("http://localhost:8070", payload);
 			alert("편지가 성공적으로 저장되었습니다!");
-			showBottomSheet.set(true);
 			goto("/fireplace/[id]");
-		} else {
+		} catch (error) {
 			alert("편지 저장 중 오류가 발생했습니다.");
+			console.log(error);
 		}
-	} catch (error) {
-		alert("서버와 통신 중 오류가 발생했습니다.");
-		console.log(error);
-	}
+
 };
 
 	const checkHeight = () => {
