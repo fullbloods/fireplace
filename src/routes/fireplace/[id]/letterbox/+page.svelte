@@ -34,9 +34,13 @@
 	<div class="title">편지함</div>
 	<div class="letterCnt">{`전체 편지 : ${cnt}개`}</div>
 	<div class="letterContainer">
-		{#each letters as letter}
-			<LetterElement {letter} />
-		{/each}
+		{#if cnt == 0}
+			<div class="nullLetterText">아직 작성된 편지가 없습니다</div>
+		{:else}
+			{#each letters as letter}
+				<LetterElement {letter} />
+			{/each}
+		{/if}
 	</div>
 </div>
 
@@ -58,6 +62,17 @@
 		color: #fff;
 		font-size: 16px;
 		margin-top: 20px;
+	}
+
+	.nullLetterText {
+		color: #fff;
+		text-align: center;
+		align-content: center;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 	.letterContainer {
