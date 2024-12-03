@@ -26,7 +26,13 @@
 >
 	<img {src} alt="편지" />
 	<div class="nameText">{letter.name}</div>
-	<div class="dayText">{`D-${letter.diffDate}`}</div>
+	<div class="dayText">
+		{#if letter.diffDate < 0}
+			{`D${letter.diffDate}`}
+		{:else}
+			확인가능
+		{/if}
+	</div>
 	<div class="private">
 		{#if letter.type === "PRIVATE"}
 			🔒
@@ -34,7 +40,7 @@
 	</div>
 </div>
 
-<LetterPasswordModal />
+<LetterPasswordModal id={letter.uuid} />
 
 <style>
 	.letterInner {

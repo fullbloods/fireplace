@@ -2,80 +2,61 @@
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
+	import type { Detail } from "$lib/types/DetailType";
+	import { page } from "$app/stores";
+	import { passwordProps } from "$lib/store/password";
+	import { get } from "svelte/store";
+	import { readLetter } from "$lib/utils/readLetter";
 
-	let musicId: string | null = null;
+	const uuid = $page.params.detailid;
+	let detail: Detail | null = null;
+	let videoUrl: string | null = null;
 
 	const goBack = () => {
 		window.history.back();
 	};
 
 	const goToReply = () => {
-		goto("/fireplace/[id]/writing");
+		goto(`/fireplace/${uuid}/writing`);
 	};
 
-	const loadYouTubePlayer = () => {
-		if (!musicId) {
-			console.log("Youtube music ID가 비어있습니다");
-			return;
-		}
-
-		const playerScript = document.createElement("script");
-		playerScript.src = "https://www.youtube.com/iframe_api";
-		playerScript.async = true;
-		document.body.appendChild(playerScript);
-
-		(window as any).onYouTubeIframeAPIReady = () => {
-			new (window as any).YT.Player("player", {
-				videoId: musicId,
-				events: {
-					onReady: (event: any) => {
-						event.target.playVideo();
-					}
-				},
-				playerVars: {
-					autoplay: 1,
-					controls: 0,
-					loop: 1,
-					playlist: musicId
-				}
-			});
-		};
-	};
-
-	const fetchMusicId = async () => {
+	const fetchDetail = async () => {
 		try {
-			const response = await fetch("localhost:8070");
-			if (!response.ok) {
-				throw new Error("music Id 가져오기 실패");
-			}
-
-			const data = await response.json();
-			musicId = data.musicId || null;
-			loadYouTubePlayer();
+			const password = get(passwordProps);
+			const response = await readLetter(uuid, password);
+			detail = response;
+			videoUrl = playMusic(detail?.music || "");
 		} catch (error) {
-			console.error("Error fetching music ID:", error);
-			alert("음악 정보를 가져오는 중 오류가 발생했습니다.");
+			console.error("Error fetching details:", error);
 		}
+	};
+
+	const playMusic = (url: string): string => {
+		const regex = /youtu\.be\/([a-zA-Z0-9_-]+)|v=([a-zA-Z0-9_-]+)/;
+		const match = url.match(regex);
+		const videoId = match?.[1] || match?.[2];
+		return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : "";
 	};
 
 	onMount(() => {
-		fetchMusicId();
+		fetchDetail();
 	});
 </script>
 
 <div class="container">
 	<div class="detailInner">
-		<div class="name"><span>from.{" "}</span>전여친</div>
-		<div class="detail">내용</div>
+		<div class="name"><span>from.{" "}</span>{detail?.name}</div>
+		<div class="detail">{detail?.content}</div>
 	</div>
-	{#if musicId}
-		<div id="player" class="videoContainer"></div>
-	{/if}
 
 	<div class="btnContainer">
 		<button class="customBtn" onclick={goBack}>닫기</button>
 		<button class="customColorBtn" onclick={goToReply}>답장하기</button>
 	</div>
+	<div class="musicContent">
+		<iframe src={videoUrl} title="music" allow="autoplay"></iframe>
+	</div>
+
 	<FireBox isMain={false} />
 </div>
 
@@ -130,6 +111,10 @@
 
 	.customColorBtn {
 		background-color: #ffe51e;
+	}
+
+	.musicContent {
+		display: none;
 	}
 
 	@media (min-height: 600px) {
