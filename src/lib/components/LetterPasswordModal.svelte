@@ -15,6 +15,7 @@
 			const response = await passwordCheck(id, password);
 			$passwordProps = password;
 			goto(`/fireplace/${user}/letterbox/${id}`);
+			showModal.set(false);
 		} catch (err: any) {
 			alert(err.response?.data?.message || "편지 데이터를 가져오는 중 오류가 발생했습니다.");
 		}
