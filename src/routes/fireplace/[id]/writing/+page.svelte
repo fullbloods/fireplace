@@ -3,18 +3,19 @@
 	import { showBottomSheet } from "$lib/store/modalStore";
 	import BottomSheet from "$lib/components/WritingBottomSheet.svelte";
 	import { goto } from "$app/navigation";
-	import axios from "axios";
+	import { writingLetter } from "$lib/utils/writingLetter";
+	import { page } from "$app/stores";
 
 	let firePlaceOwner = "왼손에 흑염룡";
 	let shortHeight = $state(false);
 	let formData = $state({
-    name: "",
-    content: "",
-    private: false,
-    password: "",
-    date: "",
-    music: ""
-});
+		name: "",
+		content: "",
+		private: false,
+		password: "",
+		date: "",
+		music: ""
+	});
 
 	const handleOpenBottomSheet = () => {
 		if (!formData.name.trim()) {
@@ -31,9 +32,7 @@
 		window.history.back();
 	};
 
-	const handleSubmit = async (event: SubmitEvent) => {
-		event.preventDefault();
-
+	const handleSubmit = async () => {
 		if (!formData.name.trim()) {
 			alert("이름을 입력해주세요.");
 			return;
@@ -49,8 +48,8 @@
 		if (formData.music && !extractVideoId(formData.music)) {
 			alert("유효한 유튜브 링크를 입력해주세요.");
 			return;
-	}
-		
+		}
+
 		const payload = {
 			name: formData.name,
 			content: formData.content,
@@ -60,35 +59,31 @@
 			openAt: formData.date
 		};
 
-		try {
-		const response = await axios.post("http://localhost:8070", payload);
+		const uuid = $page.params.id;
 
-		if (response.status === 200) {
+		try {
+			await writingLetter(uuid, payload);
+
 			alert("편지가 성공적으로 저장되었습니다!");
-			showBottomSheet.set(true);
 			goto("/fireplace/[id]");
-		} else {
-			alert("편지 저장 중 오류가 발생했습니다.");
+		} catch (error) {
+			alert("서버와 통신 중 오류가 발생했습니다.");
+			console.log(error);
 		}
-	} catch (error) {
-		alert("서버와 통신 중 오류가 발생했습니다.");
-		console.log(error);
-	}
-};
+	};
 
 	const checkHeight = () => {
 		shortHeight = window.innerHeight <= 670;
 	};
 
 	onMount(() => {
-    checkHeight();
-    window.addEventListener("resize", checkHeight);
+		checkHeight();
+		window.addEventListener("resize", checkHeight);
 
-    return () => {
-        window.removeEventListener("resize", checkHeight);
-    };
-});
-
+		return () => {
+			window.removeEventListener("resize", checkHeight);
+		};
+	});
 
 	const extractVideoId = (url: string): string | null => {
 		const regex =
@@ -98,7 +93,7 @@
 	};
 </script>
 
-<form onsubmit={handleSubmit}>
+<div>
 	<div class="container" class:shortContainer={shortHeight}>
 		<p class="toName">To.{" "}{firePlaceOwner}</p>
 		<div class="nameInputWrapper">
@@ -124,7 +119,8 @@
 			bind:value={formData.password}
 		/>
 		<div class="btnContainer" class:shortHeightStyle={shortHeight}>
-			<button type="submit" class="customColorBtn">작성 완료</button>
+			<button type="button" class="customColorBtn" onclick={handleOpenBottomSheet}>작성 완료</button
+			>
 			<button type="button" class="customBtn" onclick={goBack}>닫기</button>
 		</div>
 	</div>
@@ -132,7 +128,7 @@
 	{#if $showBottomSheet}
 		<BottomSheet {formData} />
 	{/if}
-</form>
+</div>
 
 <style>
 	.container {

@@ -6,6 +6,15 @@ export interface Letter {
 	status: LetterStatus;
 }
 
+export interface LetterCreateDto {
+	name: string;
+	content: string;
+	music: string | null;
+	private: boolean;
+	password: string;
+	openAt: string;
+}
+
 export enum LetterType {
 	PUBLIC = "PUBLIC",
 	PRIVATE = "PRIVATE"
