@@ -24,19 +24,19 @@
 	tabindex="0"
 	role="button"
 >
-	<img {src} alt="편지" />
+	<div class="letterImgContainer">
+		<img {src} alt="편지" />
+		<div class="private">
+			{#if letter.type === "PRIVATE"}
+				🔒
+			{/if}
+		</div>
+	</div>
 	<div class="nameText">{letter.name}</div>
 	<div class="dayText">
 		{#if letter.diffDate < 0}
-			{`D${letter.diffDate}`}
-		{:else}
-			확인가능
-		{/if}
-	</div>
-	<div class="private">
-		{#if letter.type === "PRIVATE"}
-			🔒
-		{/if}
+			{`${letter.diffDate}00m`}
+		{:else}📨 도착했어요!{/if}
 	</div>
 </div>
 
@@ -53,9 +53,26 @@
 		padding: 0 20px;
 	}
 
-	.letterInner > img {
+	.letterImgContainer {
 		width: 40px;
 		height: 30px;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.letterImgContainer > img {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+	}
+
+	.private {
+		width: 14px;
+		position: relative;
+		margin-top: 6px;
+		z-index: 2;
 	}
 
 	.nameText {
@@ -66,10 +83,5 @@
 	.dayText {
 		font-size: 14px;
 		margin-left: auto;
-	}
-
-	.private {
-		width: 14px;
-		margin-left: 5px;
 	}
 </style>
