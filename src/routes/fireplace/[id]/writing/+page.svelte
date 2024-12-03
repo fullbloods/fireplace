@@ -24,6 +24,9 @@
 		} else if (!formData.content.trim()) {
 			alert("내용을 적어주세요.");
 			return;
+		} else if (formData.music && !extractVideoId(formData.music)) {
+			alert("유효한 유튜브 링크를 입력해주세요.");
+			return;
 		}
 		showBottomSheet.set(true);
 	};
