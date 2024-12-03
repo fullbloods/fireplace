@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
-	import { createFireplace } from "$lib/utils/createFireplace";
+	import { createFireplace } from "$lib/utils/FireplaceUtils";
 
 	let name = $state("");
 	let password = $state("");
@@ -17,10 +17,12 @@
 			alert("이름을 입력해주세요.");
 			return;
 		}
+
 		if (name.length > 8) {
 			alert("이름은 최대 8자까지 가능합니다.");
 			return;
 		}
+
 		if (!password.trim()) {
 			alert("비밀번호를 입력해주세요.");
 			return;
@@ -28,11 +30,12 @@
 
 		try {
 			const { uuid } = await createFireplace({ name, password });
+
 			alert(`${name}의 벽난로가 생성되었습니다!`);
+
 			goto(`/fireplace/${uuid}`);
-		} catch (err) {
-			alert("벽난로 생성에 실패했습니다. 다시 시도해주세요.");
-			console.log(err);
+		} catch (err: any) {
+			alert(err.response.data.message);
 		}
 	};
 

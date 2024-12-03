@@ -2,30 +2,30 @@
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
-	import type { Detail } from "$lib/types/DetailType";
 	import { page } from "$app/stores";
 	import { passwordProps } from "$lib/store/password";
 	import { get } from "svelte/store";
-	import { readLetter } from "$lib/utils/readLetter";
+	import { getLetter } from "$lib/utils/LetterUtils";
+	import type { Letter } from "$lib/types/LetterType";
 
-	const uuid = $page.params.detailid;
-	let detail: Detail | null = null;
-	let videoUrl: string | null = null;
+	const { id, detailId } = $page.params;
+	let data: Letter | null = $state(null);
+	let videoUrl: string | null = $state(null);
+	let isShowReply: boolean = $state(false);
 
 	const goBack = () => {
-		window.history.back();
+		goto(`/fireplace/${id}/letterbox`);
 	};
 
 	const goToReply = () => {
-		goto(`/fireplace/${uuid}/writing`);
+		goto(`/fireplace/${id}/letterbox/${detailId}/reply`);
 	};
 
 	const fetchDetail = async () => {
 		try {
-			const password = get(passwordProps);
-			const response = await readLetter(uuid, password);
-			detail = response;
-			videoUrl = playMusic(detail?.music || "");
+			data = await getLetter(detailId, $passwordProps);
+
+			videoUrl = playMusic(data?.music || "");
 		} catch (error) {
 			console.error("Error fetching details:", error);
 		}
@@ -41,17 +41,36 @@
 	onMount(() => {
 		fetchDetail();
 	});
+
+	const toggleReply = () => {
+		isShowReply = !isShowReply;
+	};
 </script>
 
 <div class="container">
 	<div class="detailInner">
-		<div class="name"><span>from.{" "}</span>{detail?.name}</div>
-		<div class="detail">{detail?.content}</div>
+		{#if isShowReply}
+			<div class="name"><span>from.{" "}</span>{data?.fire.name}</div>
+			<div class="detail">{data?.reply}</div>
+		{:else}
+			<div class="name"><span>from.{" "}</span>{data?.name}</div>
+			<div class="detail">{data?.content}</div>
+		{/if}
 	</div>
 
 	<div class="btnContainer">
 		<button class="customBtn" onclick={goBack}>닫기</button>
-		<button class="customColorBtn" onclick={goToReply}>답장하기</button>
+		{#if data?.reply}
+			<button class="customColorBtn" onclick={toggleReply}
+				>{#if isShowReply}
+					편지보기
+				{:else}
+					답장보기
+				{/if}</button
+			>
+		{:else}
+			<button class="customColorBtn" onclick={goToReply}>답장하기</button>
+		{/if}
 	</div>
 	<div class="musicContent">
 		<iframe src={videoUrl} title="music" allow="autoplay"></iframe>
@@ -96,6 +115,8 @@
 		display: flex;
 		gap: 20px;
 		margin-top: 20px;
+		position: relative;
+		z-index: 1;
 	}
 
 	.customBtn,

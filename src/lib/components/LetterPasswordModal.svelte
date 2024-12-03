@@ -12,12 +12,15 @@
 	const handleSubmit = async (event: SubmitEvent) => {
 		event.preventDefault();
 		try {
-			const response = await passwordCheck(id, password);
+			await passwordCheck(id, password);
+
 			$passwordProps = password;
+
 			goto(`/fireplace/${user}/letterbox/${id}`);
+
 			showModal.set(false);
 		} catch (err: any) {
-			alert(err.response?.data?.message || "편지 데이터를 가져오는 중 오류가 발생했습니다.");
+			alert(err.response.data.message ?? "편지 데이터를 가져오는 중 오류가 발생했습니다.");
 		}
 	};
 
@@ -58,14 +61,15 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 50px;
+		padding: 0 20px;
+		z-index: 999;
 	}
 
 	.modal {
 		width: 100%;
-		height: 200px;
+		height: 240px;
 		background-color: #fff;
-		padding: 30px 60px;
+		padding: 30px 40px;
 		border-radius: 20px;
 		display: flex;
 		flex-direction: column;
@@ -79,9 +83,9 @@
 
 	.customInput {
 		width: 100%;
-		height: 30px;
+		height: 50px;
 		border: none;
-		box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
+		box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.2);
 		outline: none;
 		padding: 0 20px;
 		align-content: center;
@@ -90,7 +94,7 @@
 
 	.customInput::placeholder {
 		font-size: 16px;
-		color: #d9d9d9;
+		color: #a8a8a8;
 	}
 
 	.btnContainer {

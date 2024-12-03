@@ -3,24 +3,18 @@
 	import { showBottomSheet } from "$lib/store/modalStore";
 	import BottomSheet from "$lib/components/LinkBottomSheet.svelte";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
-	import { fetchFireplaceUser } from "$lib/utils/fireplaceUser";
-	import { onMount } from "svelte";
 	import { page } from "$app/stores";
+	import { getFireplace } from "$lib/utils/FireplaceUtils";
 
 	let src = "/images/letterImg.png";
 
-	let data: { uuid: string; name: string } = { uuid: "", name: "" };
+	let data: { uuid: string; name: string } = $state({ uuid: "", name: "" });
 
 	const id = $page.params.id;
 
 	const fetchData = async () => {
 		try {
-			if (id == null || id == undefined) {
-				goto("/");
-				return;
-			}
-
-			const user = await fetchFireplaceUser(id);
+			const user = await getFireplace(id);
 
 			data = user;
 		} catch (err: any) {
@@ -28,7 +22,13 @@
 		}
 	};
 
-	onMount(() => {
+	$effect(() => {
+		if (id == null || id == undefined) {
+			goto("/");
+		}
+	});
+
+	$effect(() => {
 		fetchData();
 	});
 

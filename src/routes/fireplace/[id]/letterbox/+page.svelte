@@ -2,12 +2,10 @@
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import LetterElement from "$lib/components/LetterElement.svelte";
-	import type { Letter } from "$lib/types/LetterType";
-	import { getLetter } from "$lib/utils/letterList";
-	import { onMount } from "svelte";
+	import type { LetterItem } from "$lib/types/LetterType";
+	import { getLetters } from "$lib/utils/LetterUtils";
 
-	let letters: Letter[] = [];
-	$: cnt = letters.length;
+	let letters: LetterItem[] = $state([]);
 
 	const id = $page.params.id;
 
@@ -17,28 +15,34 @@
 				goto("/");
 				return;
 			}
-			const fetchedLetters = await getLetter(id);
 
-			letters = fetchedLetters;
+			letters = await getLetters(id);
 		} catch (err: any) {
 			alert(err.response?.data?.message || "편지 데이터를 가져오는 중 오류가 발생했습니다.");
 		}
 	};
 
-	onMount(() => {
+	$effect(() => {
 		fetchLetters();
 	});
+
+	const moveBack = () => {
+		goto(`/fireplace/${id}`);
+	};
 </script>
 
 <div class="container">
-	<div class="title">편지함</div>
-	<div class="letterCnt">{`전체 편지 : ${cnt}개`}</div>
+	<div class="title">
+		<button class="backBtn" onclick={moveBack}>ᐊ</button>
+		<div>편지함</div>
+	</div>
+	<div class="letterCnt">{`전체 편지 : ${letters.length}개`}</div>
 	<div class="letterContainer">
-		{#if cnt == 0}
+		{#if letters.length == 0}
 			<div class="nullLetterText">아직 작성된 편지가 없습니다</div>
 		{:else}
 			{#each letters as letter}
-				<LetterElement {letter} />
+				<LetterElement {id} {letter} />
 			{/each}
 		{/if}
 	</div>
@@ -56,6 +60,15 @@
 	.title {
 		color: #fff;
 		font-size: 24px;
+		display: flex;
+		gap: 8px;
+	}
+
+	.backBtn {
+		background-color: transparent;
+		color: white;
+		border: 0;
+		outline: 0;
 	}
 
 	.letterCnt {

@@ -1,33 +1,63 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import { showBottomSheet } from "$lib/store/modalStore";
 	import BottomSheet from "$lib/components/WritingBottomSheet.svelte";
 	import { goto } from "$app/navigation";
-	import { writingLetter } from "$lib/utils/writingLetter";
 	import { page } from "$app/stores";
+	import type { LetterCreateDto } from "$lib/types/LetterType";
+	import type { Fireplace } from "$lib/types/FireplaceType";
+	import { getFireplace } from "$lib/utils/FireplaceUtils";
+	import { writingLetter } from "$lib/utils/LetterUtils";
 
-	let firePlaceOwner = "왼손에 흑염룡";
-	let shortHeight = $state(false);
-	let formData = $state({
+	const uuid = $page.params.id;
+
+	const extractVideoId = (url: string): string | null => {
+		const regex =
+			/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([\w-]{11})/;
+		const match = url.match(regex);
+		return match ? match[1] : null;
+	};
+
+	let firePlace: Fireplace | null = $state(null);
+	let shortHeight: boolean = $state(false);
+	let formData: LetterCreateDto = $state({
 		name: "",
 		content: "",
 		private: false,
 		password: "",
 		date: "",
-		music: ""
+		music: "",
+		openAt: ""
+	});
+
+	const getFireplaceDataProcess = async () => {
+		try {
+			firePlace = await getFireplace(uuid);
+		} catch (err: any) {
+			alert("연필를 놓쳐버렸어요! 다시 한 번 시도해주세요 :)");
+			goto(`/fireplace/${uuid}`);
+		}
+	};
+
+	$effect(() => {
+		getFireplaceDataProcess();
 	});
 
 	const handleOpenBottomSheet = () => {
 		if (!formData.name.trim()) {
 			alert("이름을 입력해주세요.");
 			return;
-		} else if (!formData.content.trim()) {
+		}
+
+		if (!formData.content.trim()) {
 			alert("내용을 적어주세요.");
 			return;
-		} else if (formData.music && !extractVideoId(formData.music)) {
+		}
+
+		if (formData.music && !extractVideoId(formData.music)) {
 			alert("유효한 유튜브 링크를 입력해주세요.");
 			return;
 		}
+
 		showBottomSheet.set(true);
 	};
 
@@ -35,20 +65,25 @@
 		window.history.back();
 	};
 
-	const handleSubmit = async () => {
-		if (!formData.name.trim()) {
+	const createLetterProcess = async () => {
+		if (!formData.name || !formData.name.trim()) {
 			alert("이름을 입력해주세요.");
 			return;
-		} else if (!formData.content.trim()) {
+		}
+
+		if (!formData.content || !formData.content.trim()) {
 			alert("내용을 적어주세요.");
 			return;
-		} else if (!formData.date.trim()) {
+		}
+
+		if (!formData.openAt || !formData.openAt.trim()) {
 			alert("날짜를 입력해주세요.");
 			return;
 		}
 
-		const musicId = extractVideoId(formData.music);
-		if (formData.music && !extractVideoId(formData.music)) {
+		let musicId = formData.music ? extractVideoId(formData.music) : null;
+
+		if (formData.music && !musicId) {
 			alert("유효한 유튜브 링크를 입력해주세요.");
 			return;
 		}
@@ -59,19 +94,17 @@
 			music: musicId ? `https://youtu.be/${musicId}` : null,
 			private: formData.private,
 			password: formData.password,
-			openAt: formData.date
+			openAt: formData.openAt
 		};
-
-		const uuid = $page.params.id;
 
 		try {
 			await writingLetter(uuid, payload);
 
 			alert("편지가 성공적으로 저장되었습니다!");
-			goto("/fireplace/[id]");
-		} catch (error) {
-			alert("서버와 통신 중 오류가 발생했습니다.");
-			console.log(error);
+
+			goto(`/fireplace/${uuid}`);
+		} catch (err: any) {
+			console.log(err.response.data.message);
 		}
 	};
 
@@ -79,7 +112,7 @@
 		shortHeight = window.innerHeight <= 670;
 	};
 
-	onMount(() => {
+	$effect(() => {
 		checkHeight();
 		window.addEventListener("resize", checkHeight);
 
@@ -88,17 +121,16 @@
 		};
 	});
 
-	const extractVideoId = (url: string): string | null => {
-		const regex =
-			/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([\w-]{11})/;
-		const match = url.match(regex);
-		return match ? match[1] : null;
-	};
+	$effect(() => {
+		if (!formData.private) {
+			formData.password = "";
+		}
+	});
 </script>
 
 <div>
 	<div class="container" class:shortContainer={shortHeight}>
-		<p class="toName">To.{" "}{firePlaceOwner}</p>
+		<p class="toName">To.{" "}{firePlace?.name}</p>
 		<div class="nameInputWrapper">
 			<span class="suffix">from.</span>
 			<input type="text" class="nameInput" placeholder="이름 입력" bind:value={formData.name} />
@@ -112,15 +144,24 @@
 			bind:value={formData.music}
 		/>
 		<div class="privateCheckWrapper">
-			<input type="checkbox" class="privateCheckBox" bind:checked={formData.private} />
-			<p class="privateNotice">비공개(벽난로 주인만 볼 수 있습니다.)</p>
+			<input
+				type="checkbox"
+				id="privateCheckbox"
+				class="privateCheckBox"
+				bind:checked={formData.private}
+			/>
+			<label for="privateCheckbox" class="privateNotice"
+				>비공개(벽난로 주인만 볼 수 있습니다.)</label
+			>
 		</div>
-		<input
-			type="password"
-			class="letterPasswordInput"
-			placeholder="편지 비밀번호"
-			bind:value={formData.password}
-		/>
+		{#if formData.private}
+			<input
+				type="password"
+				class="letterPasswordInput"
+				placeholder="편지 비밀번호"
+				bind:value={formData.password}
+			/>
+		{/if}
 		<div class="btnContainer" class:shortHeightStyle={shortHeight}>
 			<button type="button" class="customColorBtn" onclick={handleOpenBottomSheet}>작성 완료</button
 			>
@@ -129,7 +170,7 @@
 	</div>
 
 	{#if $showBottomSheet}
-		<BottomSheet {formData} />
+		<BottomSheet {createLetterProcess} {formData} />
 	{/if}
 </div>
 
@@ -214,9 +255,9 @@
 		height: 15px;
 		border: 1px solid #d9d9d9;
 		border-radius: 3px;
-		background-color: #289e77;
 		position: relative;
 		cursor: pointer;
+		background-color: white;
 	}
 
 	.privateCheckBox:checked {

@@ -1,25 +1,26 @@
 <script lang="ts">
-	import { showBottomSheet } from "$lib/store/modalStore";
-
-	let { formData, createLetterProcess } = $props();
-
-	const handleCloseBottomSheet = () => {
-		showBottomSheet.set(false);
-	};
+	let { formData, createReplyProcess, closeBottomSheet } = $props();
 </script>
 
 <div class="bottomSheet">
+	<div
+		class="background"
+		onclick={closeBottomSheet}
+		onkeydown={() => {}}
+		tabindex="0"
+		role="button"
+	></div>
 	<div class="bottomSheetContent">
-		<div class="bottomSheetText">벽난로 주인이 언제 편지를 읽었으면 좋겠어요?</div>
+		<div class="bottomSheetText">벽난로 비밀번호를 입력해주세요</div>
 		<input
-			type="date"
-			placeholder="날짜 입력"
+			type="text"
+			placeholder="벽난로 비밀번호"
 			class="dateCustomInput"
-			bind:value={formData.openAt}
+			bind:value={formData.password}
 		/>
 		<div class="sheetBtnContainer">
-			<button class="sheetCloseBtn" onclick={handleCloseBottomSheet}>닫기</button>
-			<button class="sheetSubmitBtn" onclick={createLetterProcess}>확인</button>
+			<button class="sheetCloseBtn" onclick={closeBottomSheet}>닫기</button>
+			<button class="sheetSubmitBtn" onclick={createReplyProcess}>확인</button>
 		</div>
 	</div>
 </div>
@@ -31,11 +32,19 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: rgba(0, 0, 0, 0.5);
 		display: flex;
 		justify-content: center;
 		align-items: flex-end;
 	}
+
+	.background {
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		position: absolute;
+		z-index: 1;
+	}
+
 	.bottomSheetContent {
 		width: 100%;
 		height: 400px;
@@ -46,6 +55,8 @@
 		display: flex;
 		flex-direction: column;
 		animation: slideUp 0.3s ease-out;
+		position: relative;
+		z-index: 2;
 	}
 
 	.bottomSheetText {

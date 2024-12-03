@@ -1,29 +1,36 @@
 <script lang="ts">
-	import type { Letter } from "$lib/types/LetterType";
 	import { goto } from "$app/navigation";
 	import { showModal } from "$lib/store/modalStore";
+	import { LetterStatus, LetterType, type LetterItem } from "$lib/types/LetterType";
 	import LetterPasswordModal from "./LetterPasswordModal.svelte";
 
-	export let letter: Letter;
+	let { id, letter }: { id: string; letter: LetterItem } = $props();
 
 	let src: string = "/images/letterImg.png";
 
-	const goToDetail = () => {
-		goto(`/fireplace/${letter.uuid}/letterbox/detail`);
+	const moveDetail = () => {
+		goto(`/fireplace/${id}/letterbox/${letter.uuid}`);
 	};
 
-	const handleOpenModal = () => {
+	const openPasswordModal = () => {
 		showModal.set(true);
+	};
+
+	const openLetter = () => {
+		if (letter.status == LetterStatus.CLOSED) {
+			alert("편지가 아직 도착하지 않았어요 :(");
+			return;
+		}
+
+		if (letter.type == LetterType.PUBLIC) {
+			moveDetail();
+		} else {
+			openPasswordModal();
+		}
 	};
 </script>
 
-<div
-	class="letterInner"
-	on:click={letter.type === "PRIVATE" ? handleOpenModal : goToDetail}
-	on:keydown={() => {}}
-	tabindex="0"
-	role="button"
->
+<div class="letterInner" onclick={openLetter} onkeydown={() => {}} tabindex="0" role="button">
 	<div class="letterImgContainer">
 		<img {src} alt="편지" />
 		<div class="private">

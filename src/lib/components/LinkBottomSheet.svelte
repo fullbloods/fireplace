@@ -6,15 +6,25 @@
 		showBottomSheet.set(false);
 	};
 
-	const copyLink = () => {
-		navigator.clipboard.writeText(url);
+	const copyLink = async () => {
+		try {
+			await window.navigator.clipboard.writeText(window.location.href);
+			alert("링크가 복사되었습니다 :)");
+		} catch (err) {
+			alert("복사에 실패했습니다 :(");
+			console.error(err);
+		} finally {
+			handleCloseBottomSheet();
+		}
 	};
 </script>
 
 <div class="bottomSheet">
 	<div class="bottomSheetContent">
 		<div class="bottomSheetText">나의 벽난로 링크</div>
-		<div class="linkBox">{url}</div>
+		<div class="linkBox" onclick={copyLink} onkeydown={() => {}} tabindex="0" role="button">
+			{url}
+		</div>
 		<div class="sheetBtnContainer">
 			<button class="sheetCloseBtn" onclick={handleCloseBottomSheet}>닫기</button>
 			<button class="sheetSubmitBtn" onclick={copyLink}>링크 복사</button>
@@ -66,6 +76,8 @@
 		background-color: white;
 		color: black;
 		align-content: center;
+		overflow: scroll;
+		white-space: nowrap;
 	}
 
 	.sheetBtnContainer {
