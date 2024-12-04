@@ -162,6 +162,11 @@
 				bind:value={formData.password}
 			/>
 		{/if}
+		<p class="warningMessage">
+			욕설 및 음란물, 타인의 명예를 훼손하는 내용과 사용자에게 피해를 줄 수 있는 음악은 관리자에
+			의해 삭제될 수 있으며, 수가기관의 요청이 있을 경우 관련자료를 제출할 수 있습니다.
+		</p>
+
 		<div class="btnContainer" class:shortHeightStyle={shortHeight}>
 			<button type="button" class="customColorBtn" onclick={handleOpenBottomSheet}>작성 완료</button
 			>
