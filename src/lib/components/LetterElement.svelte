@@ -43,11 +43,15 @@
 	<div class="dayText">
 		{#if letter.diffDate < 0}
 			{`${letter.diffDate}00m`}
-		{:else}📨 도착했어요!{/if}
+		{:else if letter.diffDate >= 10}
+			{`${letter.diffDate}km`}
+		{:else}
+			📨 도착했어요!
+		{/if}
 	</div>
 </div>
 
-<LetterPasswordModal id={letter.uuid} />
+<LetterPasswordModal id={letter.uuid} name={letter.name} />
 
 <style>
 	.letterInner {

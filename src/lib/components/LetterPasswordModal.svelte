@@ -5,7 +5,7 @@
 	import { passwordProps } from "$lib/store/password";
 	import { passwordCheck } from "$lib/utils/passwordCheck";
 
-	let { id } = $props();
+	let { id, name } = $props();
 	const user = $page.params.id;
 	let password = $state("");
 
@@ -31,9 +31,9 @@
 
 {#if $showModal}
 	<div class="backdrop">
-		<form onsubmit={handleSubmit}>
+		<form onsubmit={handleSubmit} class="form">
 			<div class="modal">
-				<div class="nameText">{`전여친의 편지`}</div>
+				<div class="nameText">{`${name}의 편지`}</div>
 				<input
 					class="customInput"
 					name="password"
@@ -61,7 +61,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 0 20px;
+		padding: 0 50px;
 		z-index: 999;
 	}
 
@@ -74,6 +74,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+	}
+
+	.form {
+		width: 100%;
 	}
 
 	.nameText {

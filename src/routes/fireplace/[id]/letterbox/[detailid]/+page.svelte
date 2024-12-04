@@ -4,7 +4,6 @@
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
 	import { page } from "$app/stores";
 	import { passwordProps } from "$lib/store/password";
-	import { get } from "svelte/store";
 	import { getLetter } from "$lib/utils/LetterUtils";
 	import type { Letter } from "$lib/types/LetterType";
 
@@ -12,6 +11,7 @@
 	let data: Letter | null = $state(null);
 	let videoUrl: string | null = $state(null);
 	let isShowReply: boolean = $state(false);
+	let isPlayMusic: boolean = $state(true);
 
 	const goBack = () => {
 		goto(`/fireplace/${id}/letterbox`);
@@ -24,7 +24,6 @@
 	const fetchDetail = async () => {
 		try {
 			data = await getLetter(detailId, $passwordProps);
-
 			videoUrl = playMusic(data?.music || "");
 		} catch (error) {
 			console.error("Error fetching details:", error);
@@ -38,22 +37,46 @@
 		return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : "";
 	};
 
+	const updateVideoUrl = () => {
+		if (isShowReply) {
+			videoUrl = playMusic(data?.replyMusic || "");
+		} else {
+			videoUrl = playMusic(data?.music || "");
+		}
+	};
+
 	onMount(() => {
 		fetchDetail();
 	});
 
 	const toggleReply = () => {
 		isShowReply = !isShowReply;
+		updateVideoUrl();
+	};
+
+	const togglePlayMusic = () => {
+		isPlayMusic = !isPlayMusic;
+		if (isPlayMusic) {
+			updateVideoUrl();
+		} else {
+			videoUrl = null;
+		}
 	};
 </script>
 
 <div class="container">
 	<div class="detailInner">
 		{#if isShowReply}
-			<div class="name"><span>from.{" "}</span>{data?.fire.name}</div>
+			<div class="name">
+				<span>from.{" "}</span>{data?.fire.name}
+				<button class="mute" onclick={togglePlayMusic}>{isPlayMusic ? "🔈" : "🔇"}</button>
+			</div>
 			<div class="detail">{data?.reply}</div>
 		{:else}
-			<div class="name"><span>from.{" "}</span>{data?.name}</div>
+			<div class="name">
+				<span>from.{" "}</span>{data?.name}
+				<button class="mute" onclick={togglePlayMusic}>{isPlayMusic ? "🔈" : "🔇"}</button>
+			</div>
 			<div class="detail">{data?.content}</div>
 		{/if}
 	</div>
@@ -100,10 +123,19 @@
 		font-size: 20px;
 		padding: 4px 5px;
 		border-bottom: 1px solid #d9d9d9;
+		position: relative;
 	}
 
 	.name > span {
 		font-size: 16px;
+	}
+
+	.mute {
+		position: absolute;
+		top: 0;
+		right: 5px;
+		border: none;
+		background-color: #fff;
 	}
 
 	.detail {
