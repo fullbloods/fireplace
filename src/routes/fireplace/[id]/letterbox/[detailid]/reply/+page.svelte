@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { showBottomSheet } from "$lib/store/modalStore";
-	import BottomSheet from "$lib/components/WritingBottomSheet.svelte";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-	import type { Letter, LetterCreateDto, LetterReplyDto } from "$lib/types/LetterType";
+	import type { Letter, LetterReplyDto } from "$lib/types/LetterType";
 	import { getLetter, replyLetter } from "$lib/utils/LetterUtils";
 	import PasswordBottomSheet from "$lib/components/PasswordBottomSheet.svelte";
 	import { passwordProps } from "$lib/store/passwordStore";

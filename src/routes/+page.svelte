@@ -14,21 +14,14 @@
 		<button class="createBtn" onclick={goToCreateFireplace}>🔥 나의 벽난로 만들기</button>
 	</div>
 	<div class="snsText">
-		문의 : <a href="https://www.instagram.com/g._.y_1232" target="_blank" class="instagramContainer"
+		문의 : <a
+			href="https://www.instagram.com/fire_placexx"
+			target="_blank"
+			class="instagramContainer"
 			><img
 				src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567008788/noticon/bqjhb6xvljt9viccy6lh.png"
-				alt="g._.y_1232 인스타그램"
-			/>g._.y_1232</a
-		><a href="https://www.instagram.com/h._ae.50" target="_blank" class="instagramContainer"
-			><img
-				src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567008788/noticon/bqjhb6xvljt9viccy6lh.png"
-				alt="h._ae.50 인스타그램"
-			/>h._ae.50</a
-		><a href="https://www.instagram.com/hyezz1__" target="_blank" class="instagramContainer"
-			><img
-				src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567008788/noticon/bqjhb6xvljt9viccy6lh.png"
-				alt="hyezz1__ 인스타그램"
-			/>hyezz1__</a
+				alt="벽난로 인스타그램"
+			/>fire_placexx</a
 		>
 	</div>
 </div>
