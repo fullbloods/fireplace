@@ -2,30 +2,31 @@
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 	import { showModal } from "$lib/store/modalStore";
-	import { passwordProps } from "$lib/store/password";
+	import { idModal, nameModal, passwordProps } from "$lib/store/passwordStore";
 	import { passwordCheck } from "$lib/utils/passwordCheck";
 
-	let { id, name } = $props();
 	const user = $page.params.id;
 	let password = $state("");
 
 	const handleSubmit = async (event: SubmitEvent) => {
 		event.preventDefault();
 		try {
-			await passwordCheck(id, password);
+			await passwordCheck($idModal, password);
 
 			$passwordProps = password;
 
-			goto(`/fireplace/${user}/letterbox/${id}`);
+			goto(`/fireplace/${user}/letterbox/${$idModal}`);
 
 			showModal.set(false);
+			password = "";
 		} catch (err: any) {
-			alert(err.response.data.message ?? "편지 데이터를 가져오는 중 오류가 발생했습니다.");
+			alert(err.response?.data?.message ?? "편지 데이터를 가져오는 중 오류가 발생했습니다.");
 		}
 	};
 
 	const handleCloseModal = () => {
 		showModal.set(false);
+		password = "";
 	};
 </script>
 
@@ -33,7 +34,7 @@
 	<div class="backdrop">
 		<form onsubmit={handleSubmit} class="form">
 			<div class="modal">
-				<div class="nameText">{`${name}의 편지`}</div>
+				<div class="nameText">{`${$nameModal} 편지`}</div>
 				<input
 					class="customInput"
 					name="password"
@@ -42,8 +43,8 @@
 					placeholder="비밀번호 입력"
 				/>
 				<div class="btnContainer">
-					<button class="customBtn" onclick={handleCloseModal}>닫기</button>
-					<button class="customColorBtn">확인</button>
+					<button type="button" class="customBtn" onclick={handleCloseModal}>닫기</button>
+					<button type="submit" class="customColorBtn">확인</button>
 				</div>
 			</div>
 		</form>

@@ -101,7 +101,7 @@
 			await writingLetter(uuid, payload);
 
 			alert("편지가 성공적으로 저장되었습니다!");
-
+			showBottomSheet.set(false);
 			goto(`/fireplace/${uuid}`);
 		} catch (err: any) {
 			console.log(err.response.data.message);

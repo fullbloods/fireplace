@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { showModal } from "$lib/store/modalStore";
+	import { idModal, nameModal } from "$lib/store/passwordStore";
 	import { LetterStatus, LetterType, type LetterItem } from "$lib/types/LetterType";
 	import LetterPasswordModal from "./LetterPasswordModal.svelte";
 
 	let { id, letter }: { id: string; letter: LetterItem } = $props();
-
 	let src: string = "/images/letterImg.png";
+
+	let idSet = $state("");
+	let nameSet = $state("");
 
 	const moveDetail = () => {
 		goto(`/fireplace/${id}/letterbox/${letter.uuid}`);
@@ -17,6 +20,10 @@
 	};
 
 	const openLetter = () => {
+		idSet = letter.uuid;
+		nameSet = letter.name;
+		$idModal = idSet;
+		$nameModal = nameSet;
 		if (letter.status == LetterStatus.CLOSED) {
 			alert("편지가 아직 도착하지 않았어요 :(");
 			return;
@@ -51,7 +58,7 @@
 	</div>
 </div>
 
-<LetterPasswordModal id={letter.uuid} name={letter.name} />
+<LetterPasswordModal />
 
 <style>
 	.letterInner {

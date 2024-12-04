@@ -3,7 +3,7 @@
 	import { onMount } from "svelte";
 	import FireBox from "$lib/components/fireElement/FireBox.svelte";
 	import { page } from "$app/stores";
-	import { passwordProps } from "$lib/store/password";
+	import { passwordProps } from "$lib/store/passwordStore";
 	import { getLetter } from "$lib/utils/LetterUtils";
 	import type { Letter } from "$lib/types/LetterType";
 
