@@ -6,7 +6,7 @@
 	import type { Letter, LetterCreateDto, LetterReplyDto } from "$lib/types/LetterType";
 	import { getLetter, replyLetter } from "$lib/utils/LetterUtils";
 	import PasswordBottomSheet from "$lib/components/PasswordBottomSheet.svelte";
-	import { passwordProps } from "$lib/store/password";
+	import { passwordProps } from "$lib/store/passwordStore";
 
 	const { id, detailId } = $page.params;
 
