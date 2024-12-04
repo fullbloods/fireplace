@@ -25,6 +25,7 @@
 		<div class="linkBox" onclick={copyLink} onkeydown={() => {}} tabindex="0" role="button">
 			{url}
 		</div>
+		<div class="desc">공유 시 『인스타 (스토리) 친한친구』 로만 부탁드립니다.</div>
 		<div class="sheetBtnContainer">
 			<button class="sheetCloseBtn" onclick={handleCloseBottomSheet}>닫기</button>
 			<button class="sheetSubmitBtn" onclick={copyLink}>링크 복사</button>
@@ -78,6 +79,11 @@
 		align-content: center;
 		overflow: scroll;
 		white-space: nowrap;
+	}
+
+	.desc {
+		margin-top: 16px;
+		color: rgb(216, 83, 83);
 	}
 
 	.sheetBtnContainer {
