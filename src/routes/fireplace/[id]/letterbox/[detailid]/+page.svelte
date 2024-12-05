@@ -37,30 +37,16 @@
 		return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : "";
 	};
 
-	const updateVideoUrl = () => {
-		if (isShowReply) {
-			videoUrl = playMusic(data?.replyMusic || "");
-		} else {
-			videoUrl = playMusic(data?.music || "");
-		}
-	};
-
 	onMount(() => {
 		fetchDetail();
 	});
 
 	const toggleReply = () => {
 		isShowReply = !isShowReply;
-		updateVideoUrl();
 	};
 
 	const togglePlayMusic = () => {
 		isPlayMusic = !isPlayMusic;
-		if (isPlayMusic) {
-			updateVideoUrl();
-		} else {
-			videoUrl = null;
-		}
 	};
 </script>
 
@@ -69,13 +55,17 @@
 		{#if isShowReply}
 			<div class="name">
 				<span>from.{" "}</span>{data?.fire.name}
-				<button class="mute" onclick={togglePlayMusic}>{isPlayMusic ? "🔈" : "🔇"}</button>
+				{#if videoUrl}
+					<button class="mute" onclick={togglePlayMusic}>{isPlayMusic ? "🔈" : "🔇"}</button>
+				{/if}
 			</div>
 			<div class="detail">{data?.reply}</div>
 		{:else}
 			<div class="name">
 				<span>from.{" "}</span>{data?.name}
-				<button class="mute" onclick={togglePlayMusic}>{isPlayMusic ? "🔈" : "🔇"}</button>
+				{#if videoUrl}
+					<button class="mute" onclick={togglePlayMusic}>{isPlayMusic ? "🔈" : "🔇"}</button>
+				{/if}
 			</div>
 			<div class="detail">{data?.content}</div>
 		{/if}
@@ -95,9 +85,12 @@
 			<button class="customColorBtn" onclick={goToReply}>답장하기</button>
 		{/if}
 	</div>
-	<div class="musicContent">
-		<iframe src={videoUrl} title="music" allow="autoplay"></iframe>
-	</div>
+
+	{#if videoUrl && isPlayMusic}
+		<div class="musicContent">
+			<iframe src={videoUrl} title="music" allow="autoplay"></iframe>
+		</div>
+	{/if}
 
 	<FireBox isMain={false} />
 </div>
