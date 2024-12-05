@@ -38,8 +38,11 @@
 	});
 
 	$effect(() => {
-		fetchData();
 		nameLength();
+	});
+
+	$effect(() => {
+		fetchData();
 	});
 
 	const goToCreateFireplace = () => {
