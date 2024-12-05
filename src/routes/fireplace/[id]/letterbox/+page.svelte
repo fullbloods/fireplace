@@ -27,7 +27,7 @@
 	});
 
 	const moveBack = () => {
-		goto(`/fireplace/${id}`);
+		window.history.back();
 	};
 </script>
 

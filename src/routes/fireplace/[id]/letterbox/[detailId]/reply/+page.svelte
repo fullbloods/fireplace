@@ -30,7 +30,7 @@
 			letter = await getLetter(detailId, $passwordProps);
 		} catch (err: any) {
 			alert("연필를 놓쳐버렸어요! 다시 한 번 시도해주세요 :)");
-			goto(`/fireplace/${id}/letterbox/${detailId}`);
+			window.history.back();
 		}
 	};
 
