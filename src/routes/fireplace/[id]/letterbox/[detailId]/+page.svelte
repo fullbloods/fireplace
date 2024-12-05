@@ -14,7 +14,7 @@
 	let isPlayMusic: boolean = $state(true);
 
 	const goBack = () => {
-		goto(`/fireplace/${id}/letterbox`);
+		window.history.back();
 	};
 
 	const goToReply = () => {
