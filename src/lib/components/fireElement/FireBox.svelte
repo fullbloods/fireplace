@@ -1,15 +1,32 @@
-<script>
+<script lang="ts">
 	import FireAni from "./FireAni.svelte";
+	import { onMount } from "svelte";
 
 	let src = "/images/firePlaceFrame.png";
-
 	export let isMain = true;
+
+	let flameHeight = 0;
+	let placeWallHeight = "25vh";
+
+	const adjustPlaceWallHeight = () => {
+		const flameElement = document.querySelector(".flame") as HTMLElement | null;
+		if (flameElement) {
+			flameHeight = flameElement.offsetHeight;
+			placeWallHeight = `${Math.max(0.6 * flameHeight, 100)}px`;
+		}
+	};
+
+	onMount(() => {
+		adjustPlaceWallHeight();
+		window.addEventListener("resize", adjustPlaceWallHeight);
+		return () => window.removeEventListener("resize", adjustPlaceWallHeight);
+	});
 </script>
 
 <div class="container">
 	<div class="placeContainer">
 		<img {src} alt="벽난로" class="flame" class:mainrenderFlame={isMain} />
-		<div class="placeWall">
+		<div class="placeWall" style="height: {placeWallHeight}">
 			<FireAni />
 		</div>
 	</div>
@@ -39,7 +56,6 @@
 
 	.placeWall {
 		width: 50%;
-		height: 25vh;
 		background-color: #49241a;
 		left: 50%;
 		bottom: 100%;

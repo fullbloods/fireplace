@@ -6,7 +6,9 @@
 	import LetterPasswordModal from "./LetterPasswordModal.svelte";
 
 	let { id, letter }: { id: string; letter: LetterItem } = $props();
+
 	let src: string = "/images/letterImg.png";
+	let privateIcon: string = "/images/privateIcon.png";
 
 	let idSet = $state("");
 	let nameSet = $state("");
@@ -42,16 +44,16 @@
 		<img {src} alt="편지" />
 		<div class="private">
 			{#if letter.type === "PRIVATE"}
-				🔒
+				<img src={privateIcon} alt="비공개" />
 			{/if}
 		</div>
 	</div>
 	<div class="nameText">{letter.name}</div>
 	<div class="dayText">
-		{#if letter.diffDate < 0}
-			{`${letter.diffDate}00m`}
-		{:else if letter.diffDate >= 10}
-			{`${letter.diffDate}km`}
+		{#if letter.diffDate <= -10}
+			{`${Math.abs(letter.diffDate)}km`}
+		{:else if letter.diffDate < 0}
+			{`${Math.abs(letter.diffDate)}00m`}
 		{:else}
 			📨 도착했어요!
 		{/if}
@@ -87,10 +89,13 @@
 	}
 
 	.private {
-		width: 14px;
 		position: relative;
 		margin-top: 6px;
 		z-index: 2;
+	}
+
+	.private > img {
+		width: 20px;
 	}
 
 	.nameText {

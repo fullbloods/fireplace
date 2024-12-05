@@ -34,7 +34,7 @@
 	<div class="backdrop">
 		<form onsubmit={handleSubmit} class="form">
 			<div class="modal">
-				<div class="nameText">{`${$nameModal} 편지`}</div>
+				<div class="nameText">{`${$nameModal}의 편지`}</div>
 				<input
 					class="customInput"
 					name="password"

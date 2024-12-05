@@ -69,6 +69,8 @@
 		color: white;
 		border: 0;
 		outline: 0;
+		position: relative;
+		z-index: 2;
 	}
 
 	.letterCnt {

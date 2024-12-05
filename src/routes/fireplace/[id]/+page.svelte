@@ -10,6 +10,8 @@
 
 	let data: { uuid: string; name: string } = $state({ uuid: "", name: "" });
 
+	let longName = $state(false);
+
 	const id = $page.params.id;
 
 	const fetchData = async () => {
@@ -22,6 +24,12 @@
 		}
 	};
 
+	const nameLength = () => {
+		if (data.name.length > 7) {
+			longName = true;
+		}
+	};
+
 	$effect(() => {
 		if (id == null || id == undefined) {
 			goto("/");
@@ -30,6 +38,7 @@
 
 	$effect(() => {
 		fetchData();
+		nameLength();
 	});
 
 	const goToCreateFireplace = () => {
@@ -50,7 +59,7 @@
 			<img {src} alt="편지함" />
 		</button>
 	</div>
-	<div class="name">{data.name}의 벽난로</div>
+	<div class="name" class:longName>{data.name}의 벽난로</div>
 	<FireBox isMain={true} />
 	<div class="btnContainer">
 		<button class="customColorBtn" onclick={goToWriting}>
@@ -107,6 +116,11 @@
 		color: #fff;
 		text-align: center;
 		margin-top: 30px;
+		white-space: nowrap;
+	}
+
+	.longName {
+		font-size: 30px;
 	}
 
 	.btnContainer {
