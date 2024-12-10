@@ -6,6 +6,7 @@
 	import { passwordProps } from "$lib/store/passwordStore";
 	import { getLetter } from "$lib/utils/LetterUtils";
 	import type { Letter } from "$lib/types/LetterType";
+	import { bgmPlay } from "$lib/store/bgmStore";
 
 	const { id, detailId } = $page.params;
 	let data: Letter | null = $state(null);
@@ -15,6 +16,7 @@
 
 	const goBack = () => {
 		window.history.back();
+		bgmPlay.set(true);
 	};
 
 	const goToReply = () => {
@@ -37,10 +39,6 @@
 		return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : "";
 	};
 
-	onMount(() => {
-		fetchDetail();
-	});
-
 	const toggleReply = () => {
 		isShowReply = !isShowReply;
 	};
@@ -48,6 +46,19 @@
 	const togglePlayMusic = () => {
 		isPlayMusic = !isPlayMusic;
 	};
+
+	const handleBgm = () => {
+		if (videoUrl) {
+			bgmPlay.set(false);
+		} else {
+			bgmPlay.set(true);
+		}
+	};
+
+	onMount(() => {
+		fetchDetail();
+		handleBgm();
+	});
 </script>
 
 <div class="container">
@@ -87,9 +98,7 @@
 	</div>
 
 	{#if videoUrl && isPlayMusic}
-		<div class="musicContent">
-			<iframe src={videoUrl} title="music" allow="autoplay"></iframe>
-		</div>
+		<iframe src={videoUrl} title="music" allow="autoplay" class="musicContent"></iframe>
 	{/if}
 
 	<FireBox isMain={false} />
