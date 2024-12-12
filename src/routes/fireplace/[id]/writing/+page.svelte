@@ -17,6 +17,7 @@
 		return match ? match[1] : null;
 	};
 
+	let isLoading: boolean = $state(false);
 	let firePlace: Fireplace | null = $state(null);
 	let shortHeight: boolean = $state(false);
 	let formData: LetterCreateDto = $state({
@@ -66,6 +67,11 @@
 	};
 
 	const createLetterProcess = async () => {
+		if (isLoading) {
+			alert("편지 봉투를 고르고있습니다 조금만 기다려 주세요 :)");
+			return;
+		}
+
 		if (!formData.name || !formData.name.trim()) {
 			alert("이름을 입력해주세요.");
 			return;
@@ -98,13 +104,17 @@
 		};
 
 		try {
-			await writingLetter(uuid, payload);
+			isLoading = true;
 
+			await writingLetter(uuid, payload);
 			alert("편지가 성공적으로 저장되었습니다!");
+
 			showBottomSheet.set(false);
 			goto(`/fireplace/${uuid}`);
 		} catch (err: any) {
 			console.log(err.response.data.message);
+		} finally {
+			isLoading = false;
 		}
 	};
 
@@ -175,7 +185,7 @@
 	</div>
 
 	{#if $showBottomSheet}
-		<BottomSheet {createLetterProcess} {formData} />
+		<BottomSheet {createLetterProcess} {formData} {isLoading} />
 	{/if}
 </div>
 

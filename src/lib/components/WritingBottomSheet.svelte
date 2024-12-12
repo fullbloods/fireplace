@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { showBottomSheet } from "$lib/store/modalStore";
 
-	let { formData, createLetterProcess } = $props();
+	let { formData, createLetterProcess, isLoading } = $props();
 
 	const handleCloseBottomSheet = () => {
 		showBottomSheet.set(false);
@@ -19,7 +19,8 @@
 		/>
 		<div class="sheetBtnContainer">
 			<button class="sheetCloseBtn" onclick={handleCloseBottomSheet}>닫기</button>
-			<button class="sheetSubmitBtn" onclick={createLetterProcess}>확인</button>
+			<button class="sheetSubmitBtn" onclick={createLetterProcess} disabled={isLoading}>확인</button
+			>
 		</div>
 	</div>
 </div>
@@ -93,6 +94,10 @@
 	.sheetSubmitBtn {
 		background: #ffe51e;
 		border: none;
+	}
+
+	.sheetSubmitBtn:disabled {
+		background-color: #dcdcdc;
 	}
 
 	@keyframes slideUp {
