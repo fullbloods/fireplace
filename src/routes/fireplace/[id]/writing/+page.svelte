@@ -66,6 +66,28 @@
 		window.history.back();
 	};
 
+	const dateCheck = () => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const maxDate = new Date(today);
+		maxDate.setMonth(today.getMonth() + 1);
+
+		if (maxDate.getDate() < today.getDate()) {
+			maxDate.setDate(today.getDate());
+		}
+
+		const selectedDate = new Date(formData.openAt);
+
+		selectedDate.setHours(0, 0, 0, 0);
+		maxDate.setHours(0, 0, 0, 0);
+
+		if (selectedDate > maxDate) {
+			alert("너무 오래 기다리면 힘들어요😢 한 달 이내로 해주세요");
+			return;
+		}
+	};
+
 	const createLetterProcess = async () => {
 		if (isLoading) {
 			alert("편지 봉투를 고르고있습니다 조금만 기다려 주세요 :)");
@@ -94,25 +116,7 @@
 			return;
 		}
 
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
-
-		const maxDate = new Date(today);
-		maxDate.setMonth(today.getMonth() + 1);
-
-		if (maxDate.getDate() < today.getDate()) {
-			maxDate.setDate(today.getDate());
-		}
-
-		const selectedDate = new Date(formData.openAt);
-
-		selectedDate.setHours(0, 0, 0, 0);
-		maxDate.setHours(0, 0, 0, 0);
-
-		if (selectedDate > maxDate) {
-			alert("너무 오래 기다리면 힘들어요😢 한 달 이내로 해주세요");
-			return;
-		}
+		dateCheck();
 
 		const payload = {
 			name: formData.name,
